@@ -5,7 +5,6 @@ export (PackedScene) var pt_2 #Equipo 2
 export (PackedScene) var pelota
 export (int) var cant_jugadores
 
-
 func _ready():
 	iniciar_nivel()
 	

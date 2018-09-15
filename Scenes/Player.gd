@@ -5,7 +5,7 @@ export (float) var vel_desp
 export (float) var vel_desp_b
 enum direcciones {izquierda, derecha, arriba, abajo, diagabd,diagarrd, diababi, diabarri}
 var direccion = derecha
-
+var t_pelota #Si tiene o no pelota en pie
 
 var moviendo = false;
 
@@ -78,7 +78,23 @@ func procesar_teclas():
 
 func procesar_movimiento(var delta_t):
 	if(moviendo):
-		move_and_collide(Velocidad * delta_t)
+		var obj_colisionado = move_and_collide(Velocidad * delta_t)
+		if(t_pelota != null && !t_pelota.get_node("AnimationPlayer").is_playing()): #Tengo pelota en pie
+			t_pelota.mover(Velocidad)
+			t_pelota = null #Suelto la pelota
+			var vel_provis = Velocidad
+			Velocidad /= 4
+			yield(get_tree().create_timer(1.5), "timeout") #Espero 1 segundo
+			Velocidad = vel_provis
+			
+		if(obj_colisionado != null && obj_colisionado.collider.is_in_group("pelota")):
+			if(!get_node("AnimationPlayer").is_playing()):
+				t_pelota = obj_colisionado.collider
+		else:
+			t_pelota = null
+			
+func restaurar_velocidad():
+	pass
 
 func _on_AnimationPlayer_animation_finished(anim_name):
 	moviendo = false
@@ -102,3 +118,26 @@ func patear():
 			get_node("AnimationPlayer").call_deferred("play","pateardaba")
 		diabarri:
 			get_node("AnimationPlayer").call_deferred("play","pateardarr")
+			
+	yield(get_tree().create_timer(0.5), "timeout")
+	
+	match direccion:
+		derecha:
+			get_node("AnimationPlayer").play("der")
+			get_node("AnimationPlayer").stop()
+		izquierda:
+			get_node("AnimationPlayer").call_deferred("play","pateard")
+		arriba:
+			get_node("AnimationPlayer").call_deferred("play","pateararr")
+		abajo:
+			get_node("AnimationPlayer").call_deferred("play","patearabaj")
+		diagabd:
+			get_node("AnimationPlayer").call_deferred("play","pateardaba")
+		diagarrd:
+			get_node("AnimationPlayer").call_deferred("play","pateardarr")
+		diababi:
+			get_node("AnimationPlayer").call_deferred("play","pateardaba")
+		diabarri:
+			get_node("AnimationPlayer").call_deferred("play","pateardarr")
+	
+	

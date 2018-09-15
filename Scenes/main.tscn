@@ -17,7 +17,7 @@ extents = Vector2( 4.02122, 22.9326 )
 custom_solver_bias = 0.0
 extents = Vector2( 6.9229, 22.331 )
 
-[node name="main" type="Node" index="0" groups=[
+[node name="main" type="Node" groups=[
 "main",
 ]]
 
@@ -164,6 +164,6 @@ position = Vector2( 110.912, 29.0483 )
 "sp",
 ]]
 
-position = Vector2( 2.20062, -16.7248 )
+position = Vector2( 2.64074, -20.6859 )
 
 

@@ -2,12 +2,12 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/jugador.png-3559dde75d6de7471d6842d33bae063a.stex"
+path="res://.import/sombra.png-bccef4b92ab21cfc5f35466898fedc61.stex"
 
 [deps]
 
-source_file="res://Sprites/jugador.png"
-dest_files=[ "res://.import/jugador.png-3559dde75d6de7471d6842d33bae063a.stex" ]
+source_file="res://Sprites/sombra.png"
+dest_files=[ "res://.import/sombra.png-bccef4b92ab21cfc5f35466898fedc61.stex" ]
 
 [params]
 
@@ -16,7 +16,7 @@ compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
