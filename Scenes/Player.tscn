@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Scenes/Player.gd" type="Script" id=1]
 [ext_resource path="res://Sprites/jugador.png" type="Texture" id=2]
@@ -226,14 +226,23 @@ tracks/0/keys = {
 "values": [ 15 ]
 }
 
-[node name="Player" type="KinematicBody2D"]
+[sub_resource type="RectangleShape2D" id=14]
 
+custom_solver_bias = 0.0
+extents = Vector2( 6.07366, 11.5536 )
+
+[node name="Player" type="KinematicBody2D" index="0" groups=[
+"player",
+]]
+
+z_as_relative = false
 input_pickable = false
 collision_layer = 1
 collision_mask = 1
 collision/safe_margin = 0.08
 script = ExtResource( 1 )
-vel_desp = 30.0
+_sections_unfolded = [ "Z Index" ]
+vel_desp = 6.0
 vel_desp_b = 15.0
 
 [node name="Sprite" type="Sprite" parent="." index="0"]
@@ -241,14 +250,15 @@ vel_desp_b = 15.0
 modulate = Color( 0.996094, 0.996094, 0.996094, 1 )
 position = Vector2( -1.05774, 0 )
 scale = Vector2( 0.867783, 1 )
+z_as_relative = false
 texture = ExtResource( 2 )
 hframes = 34
 frame = 4
-_sections_unfolded = [ "Animation", "Material" ]
+_sections_unfolded = [ "Animation", "Material", "Z Index" ]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
 
-position = Vector2( -0.487671, 10.051 )
+position = Vector2( -0.817764, 9.94097 )
 shape = SubResource( 1 )
 _sections_unfolded = [ "Transform" ]
 
@@ -273,6 +283,24 @@ anims/pateardaba = SubResource( 12 )
 anims/pateardarr = SubResource( 13 )
 blend_times = [  ]
 
+[node name="Area2D" type="Area2D" parent="." index="3"]
+
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+_sections_unfolded = [ "Transform" ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" index="0"]
+
+position = Vector2( -0.770218, 1.54044 )
+shape = SubResource( 14 )
+
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
 
 

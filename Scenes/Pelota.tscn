@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scenes/Pelota.gd" type="Script" id=1]
 [ext_resource path="res://Sprites/sombra.png" type="Texture" id=2]
@@ -54,18 +54,25 @@ tracks/0/keys = {
 "values": [ 320.0, 270.0, 180.0, 0.0 ]
 }
 
-[node name="Pelota" type="KinematicBody2D" index="0" groups=[
+[sub_resource type="RectangleShape2D" id=5]
+
+custom_solver_bias = 0.0
+extents = Vector2( 3.67366, 3.97667 )
+
+[node name="Pelota" type="KinematicBody2D" groups=[
 "pelota",
 ]]
 
 input_pickable = false
 collision_layer = 1
 collision_mask = 1
-collision/safe_margin = 0.08
+collision/safe_margin = 0.01
 script = ExtResource( 1 )
-friccion = -0.3
+_sections_unfolded = [ "collision" ]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="0"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="0" groups=[
+"bola",
+]]
 
 shape = SubResource( 1 )
 _sections_unfolded = [ "Transform" ]
@@ -86,7 +93,7 @@ _sections_unfolded = [ "Transform" ]
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="3"]
 
 root_node = NodePath("..")
-autoplay = "mov_der"
+autoplay = ""
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
@@ -94,6 +101,20 @@ anims/idle = SubResource( 2 )
 anims/mov_der = SubResource( 3 )
 anims/mov_izq = SubResource( 4 )
 blend_times = [  ]
+
+[node name="Area2D" type="Area2D" parent="." index="4"]
+
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" index="0"]
+
+shape = SubResource( 5 )
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 

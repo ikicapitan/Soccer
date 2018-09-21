@@ -242,7 +242,7 @@ position = Vector2( -1.05774, 0 )
 scale = Vector2( 0.867783, 1 )
 texture = ExtResource( 2 )
 hframes = 34
-frame = 21
+frame = 4
 _sections_unfolded = [ "Animation" ]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]

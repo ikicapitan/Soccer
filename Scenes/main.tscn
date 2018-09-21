@@ -29,13 +29,15 @@ cant_jugadores = 5
 
 [node name="BackGround" type="Sprite" parent="." index="0"]
 
-position = Vector2( 0, -1 )
+position = Vector2( -1.32037, 20.5661 )
+z_index = -5
 texture = ExtResource( 5 )
+_sections_unfolded = [ "Z Index" ]
 
 [node name="ArcoI" type="Area2D" parent="." index="1"]
 
 editor/display_folded = true
-position = Vector2( -229.543, -29.1905 )
+position = Vector2( -230.863, -7.62435 )
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
@@ -59,7 +61,7 @@ shape = SubResource( 1 )
 [node name="ArcoD" type="Area2D" parent="." index="2"]
 
 editor/display_folded = true
-position = Vector2( 229.543, -29.1905 )
+position = Vector2( 228.223, -7.62435 )
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
@@ -83,7 +85,7 @@ shape = SubResource( 2 )
 
 [node name="Camera2D" type="Camera2D" parent="." index="3"]
 
-position = Vector2( 0, -15 )
+position = Vector2( -1.32037, 6.56615 )
 anchor_mode = 1
 rotating = false
 current = true
@@ -112,58 +114,64 @@ _sections_unfolded = [ "Transform" ]
 "equipo",
 ]]
 
-editor/display_folded = true
-
 [node name="Spawn_J1" type="Position2D" parent="Equipo A" index="0"]
 
-position = Vector2( -5.28152, -1.7605 )
+position = Vector2( -13.3333, 13.3333 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="Spawn_J2" type="Position2D" parent="Equipo A" index="1"]
 
-position = Vector2( -5.72168, -29.0483 )
+position = Vector2( -13.3333, -13.3333 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="Spawn_J3" type="Position2D" parent="Equipo A" index="2"]
 
-position = Vector2( -64.2585, -67.7794 )
+position = Vector2( -53.3333, -53.3333 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="Spawn_J4" type="Position2D" parent="Equipo A" index="3"]
 
-position = Vector2( -89.3457, -12.7636 )
+position = Vector2( -53.3333, 53.3333 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="Spawn_J5" type="Position2D" parent="Equipo A" index="4"]
 
-position = Vector2( -53.6954, 40.4916 )
+position = Vector2( -80, 0 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="Equipo B" type="Node" parent="." index="5" groups=[
 "equipo",
 ]]
 
-editor/display_folded = true
-
 [node name="Spawn_J1" type="Position2D" parent="Equipo B" index="0"]
 
-position = Vector2( 30.3687, -72.1807 )
+position = Vector2( 13.3333, 13.3333 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="Spawn_J2" type="Position2D" parent="Equipo B" index="1"]
 
-position = Vector2( 49.7342, -15.8445 )
+position = Vector2( 13.3333, -13.3333 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="Spawn_J3" type="Position2D" parent="Equipo B" index="2"]
 
-position = Vector2( 33.0094, 43.1324 )
+position = Vector2( 53.3333, -53.3333 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="Spawn_J4" type="Position2D" parent="Equipo B" index="3"]
 
-position = Vector2( 110.472, -44.8929 )
+position = Vector2( 53.3333, 53.3333 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="Spawn_J5" type="Position2D" parent="Equipo B" index="4"]
 
-position = Vector2( 110.912, 29.0483 )
+position = Vector2( 80, 0 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="SP_Pelota" type="Position2D" parent="." index="6" groups=[
 "sp",
 ]]
 
-position = Vector2( 2.64074, -20.6859 )
+_sections_unfolded = [ "Transform" ]
 
 
