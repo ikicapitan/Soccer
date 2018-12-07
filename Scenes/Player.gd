@@ -6,7 +6,8 @@ export (float) var vel_desp_b
 enum direcciones {izquierda, derecha, arriba, abajo, diagabd,diagarrd, diababi, diabarri}
 var direccion = derecha
 var t_pelota #Si tiene o no pelota en pie
-var target_z #Si colisiono con otra area de otro jugador
+var cooldown_ball = false
+
 
 var moviendo = false;
 
@@ -18,12 +19,8 @@ func _ready():
 func _physics_process(delta):
 	procesar_teclas()
 	procesar_movimiento(delta)
-	if(target_z):
-		check_z()
 	
-		
-func procesar_teclas():
-	
+func procesar_teclas():	
 	if(teclas[4] && !moviendo): #Si patea
 		Velocidad = Vector2(0,0)
 		moviendo = true
@@ -81,22 +78,65 @@ func procesar_teclas():
 func procesar_movimiento(var delta_t):
 	if(moviendo):
 		var obj_colisionado = move_and_collide(Velocidad * delta_t)
-		if(t_pelota != null && !t_pelota.get_node("AnimationPlayer").is_playing()): #Tengo pelota en pie
-			t_pelota.mover(Velocidad*get_node("AnimationPlayer").get_animation("Aba").length)
-			t_pelota = null #Suelto la pelota
-			var vel_provis = Velocidad
-			Velocidad /= 4
-			yield(get_tree().create_timer(1.5), "timeout") #Espero 1 segundo
-			Velocidad = vel_provis
+		if(t_pelota != null && !t_pelota.get_node("AnimationPlayer").is_playing() && !cooldown_ball): #Tengo pelota en pie
+			if(abs($CollisionShape2D.position.distance_to(t_pelota.get_node("CollisionShape2D").position)) < 4): #Si estan proximos la pelota y el jugador
+				if(check_direction_player(t_pelota.get_node("Area2D/CollisionShape2D").global_position)):
+					t_pelota.mover(Velocidad*get_node("AnimationPlayer").get_animation("Aba").length)
+					t_pelota = null #Suelto la pelota
+					var vel_provis = Velocidad
+					Velocidad /= 4
+					yield(get_tree().create_timer(1.5), "timeout") #Espero 1 segundo
+					Velocidad = vel_provis
+			else:
+				t_pelota = null
 			
-		if(obj_colisionado != null && obj_colisionado.collider.is_in_group("pelota")):
-			if(!get_node("AnimationPlayer").is_playing() && !obj_colisionado.collider.get_node("AnimationPlayer").is_playing()):
+			
+		if(obj_colisionado != null && obj_colisionado.collider.is_in_group("pelota") && t_pelota == null):
+			#Funciona de 10 hasta aca
+			if(!obj_colisionado.collider.get_node("AnimationPlayer").is_playing()):
+				print("col")
 				t_pelota = obj_colisionado.collider #Asigno pelota como target
-		else:
+				cooldown_ball = true
+				yield(get_tree().create_timer(0.1),"timeout")
+				cooldown_ball = false
+				
+		elif(!cooldown_ball):
 			t_pelota = null #Borrar target
 			
 func restaurar_velocidad():
 	pass
+	
+func check_direction_player(var ball_pos): #Testea direccion del player y posicion de la bola a ver si la mueve o no
+	match(direccion):
+		izquierda:
+			if(ball_pos.x < $CollisionShape2D.global_position.x):
+				return true
+		derecha:
+			if(ball_pos.x > $CollisionShape2D.global_position.x):
+				return true
+		arriba:
+			if(ball_pos.y < $CollisionShape2D.global_position.y):
+				return true
+		abajo:
+			if(ball_pos.y > $CollisionShape2D.global_position.y):
+				return true
+		diagabd:
+			if(ball_pos.y > $CollisionShape2D.global_position.y):
+				if(ball_pos.x > $CollisionShape2D.global_position.x):
+					return true
+		diagarrd:
+			if(ball_pos.y < $CollisionShape2D.global_position.y):
+				if(ball_pos.x > $CollisionShape2D.global_position.x):
+					return true
+		diababi:
+			if(ball_pos.y > $CollisionShape2D.global_position.y):
+				if(ball_pos.x < $CollisionShape2D.global_position.x):
+					return true
+		diabarri:
+			if(ball_pos.y < $CollisionShape2D.global_position.y):
+				if(ball_pos.x < $CollisionShape2D.global_position.x):
+					return true
+	return false
 
 func _on_AnimationPlayer_animation_finished(anim_name):
 	moviendo = false
@@ -121,6 +161,10 @@ func patear():
 		diabarri:
 			get_node("AnimationPlayer").call_deferred("play","pateardarr")
 			
+	if(t_pelota != null): #Si esta en posesion del balon en ese momento
+		t_pelota.pase = true
+
+			
 	yield(get_tree().create_timer(0.5), "timeout")
 	
 	match direccion:
@@ -143,18 +187,8 @@ func patear():
 	
 func _on_Area2D_body_entered(body):	
 	if body != self:
-		target_z = body
-
-func check_z():
-	if(get_node("CollisionShape2D").global_position.y > target_z.get_node("CollisionShape2D").global_position.y):
-		get_node("Sprite").z_index = 1
-		target_z.get_node("Sprite").z_index = 0
-	else:
-		target_z.get_node("Sprite").z_index = 1
-		get_node("Sprite").z_index = 0
-
+		pass
 
 func _on_Area2D_body_exited(body):
-	target_z = null
-	get_node("Sprite").z_index = 0
-	body.get_node("Sprite").z_index = 0
+	pass
+	
