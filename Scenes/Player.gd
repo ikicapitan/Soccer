@@ -76,6 +76,7 @@ func procesar_teclas():
 	
 
 func procesar_movimiento(var delta_t):
+	
 	if(moviendo):
 		var obj_colisionado = move_and_collide(Velocidad * delta_t)
 		if(t_pelota != null && !t_pelota.get_node("AnimationPlayer").is_playing() && !cooldown_ball): #Tengo pelota en pie
@@ -146,20 +147,36 @@ func patear():
 	match direccion:
 		derecha:
 			get_node("AnimationPlayer").call_deferred("play","pateard")
+			if(t_pelota != null):
+				t_pelota.Velocidad = Vector2(t_pelota.vel_pas, 0)
 		izquierda:
 			get_node("AnimationPlayer").call_deferred("play","pateard")
+			if(t_pelota != null):
+				t_pelota.Velocidad = Vector2(-t_pelota.vel_pas, 0)
 		arriba:
 			get_node("AnimationPlayer").call_deferred("play","pateararr")
+			if(t_pelota != null):
+				t_pelota.Velocidad = Vector2(0, -t_pelota.vel_pas)
 		abajo:
 			get_node("AnimationPlayer").call_deferred("play","patearabaj")
+			if(t_pelota != null):
+				t_pelota.Velocidad = Vector2(0, t_pelota.vel_pas)
 		diagabd:
 			get_node("AnimationPlayer").call_deferred("play","pateardaba")
+			if(t_pelota != null):
+				t_pelota.Velocidad = Vector2(t_pelota.vel_pas, t_pelota.vel_pas)
 		diagarrd:
 			get_node("AnimationPlayer").call_deferred("play","pateardarr")
+			if(t_pelota != null):
+				t_pelota.Velocidad = Vector2(t_pelota.vel_pas, -t_pelota.vel_pas)
 		diababi:
 			get_node("AnimationPlayer").call_deferred("play","pateardaba")
+			if(t_pelota != null):
+				t_pelota.Velocidad = Vector2(-t_pelota.vel_pas, t_pelota.vel_pas)
 		diabarri:
 			get_node("AnimationPlayer").call_deferred("play","pateardarr")
+			if(t_pelota != null):
+				t_pelota.Velocidad = Vector2(-t_pelota.vel_pas, -t_pelota.vel_pas)
 			
 	if(t_pelota != null): #Si esta en posesion del balon en ese momento
 		t_pelota.pase = true
