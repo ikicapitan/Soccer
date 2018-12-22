@@ -6,12 +6,11 @@ export (float) var vel_desp_b
 enum direcciones {izquierda, derecha, arriba, abajo, diagabd,diagarrd, diababi, diabarri}
 var direccion = derecha
 var t_pelota #Si tiene o no pelota en pie
-var cooldown_ball = false
 
 
 var moviendo = false;
 
-var teclas = [false, false, false, false, false] #teclas[0] arriba, 1 abajo, 2 izquierda, 3 derecha, 4 patear
+var teclas = [false, false, false, false, false, false] #teclas[0] arriba, 1 abajo, 2 izquierda, 3 derecha, 4 patear, 5 pase
 
 func _ready():
 	pass
@@ -21,10 +20,13 @@ func _physics_process(delta):
 	procesar_movimiento(delta)
 	
 func procesar_teclas():	
-	if(teclas[4] && !moviendo): #Si patea
+	if((teclas[4] || teclas[5]) && !moviendo): #Si patea o pasa
 		Velocidad = Vector2(0,0)
 		moviendo = true
-		patear()
+		if(teclas[4]):
+			patear(1)
+		elif(teclas[5]):
+			patear(0)
 	elif(teclas[3] && !moviendo): #Si va hacia la derecha
 		if(teclas[0]): #Si ademas va hacia arriba (SERIA DIAGONAL ARRIBA)
 			Velocidad = Vector2(vel_desp/get_node("AnimationPlayer").get_animation("diarr").length, -vel_desp/get_node("AnimationPlayer").get_animation("diarr").length)
@@ -79,9 +81,9 @@ func procesar_movimiento(var delta_t):
 	
 	if(moviendo):
 		var obj_colisionado = move_and_collide(Velocidad * delta_t)
-		if(t_pelota != null && !t_pelota.get_node("AnimationPlayer").is_playing() && !cooldown_ball): #Tengo pelota en pie
+		if(t_pelota != null && !t_pelota.get_node("AnimationPlayer").is_playing() && !t_pelota.pase): #Tengo pelota en pie
 			if(abs($CollisionShape2D.position.distance_to(t_pelota.get_node("CollisionShape2D").position)) < 4): #Si estan proximos la pelota y el jugador
-				if(check_direction_player(t_pelota.get_node("Area2D/CollisionShape2D").global_position)):
+				if(check_direction_player(t_pelota.get_node("Area2D/CollisionShape2D").global_position) && $AnimationPlayer.current_animation_position <= 0.1):
 					t_pelota.mover(Velocidad*get_node("AnimationPlayer").get_animation("Aba").length)
 					t_pelota = null #Suelto la pelota
 					var vel_provis = Velocidad
@@ -95,14 +97,9 @@ func procesar_movimiento(var delta_t):
 		if(obj_colisionado != null && obj_colisionado.collider.is_in_group("pelota") && t_pelota == null):
 			#Funciona de 10 hasta aca
 			if(!obj_colisionado.collider.get_node("AnimationPlayer").is_playing()):
-				print("col")
 				t_pelota = obj_colisionado.collider #Asigno pelota como target
-				cooldown_ball = true
-				yield(get_tree().create_timer(0.1),"timeout")
-				cooldown_ball = false
 				
-		elif(!cooldown_ball):
-			t_pelota = null #Borrar target
+
 			
 func restaurar_velocidad():
 	pass
@@ -143,43 +140,59 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	moviendo = false
 	Velocidad = Vector2(0,0)
 	
-func patear():
+func patear(numero): #Numero 0 es pase, numero 1 es patear
+
+	var velocidad_patear
+	
+	if(t_pelota != null): #Si no esta pateando el aire
+		match(numero):
+			0: #Pase
+				velocidad_patear = t_pelota.vel_pas
+			1: #Patear
+				velocidad_patear = t_pelota.vel_shoot 
+
 	match direccion:
 		derecha:
 			get_node("AnimationPlayer").call_deferred("play","pateard")
-			if(t_pelota != null):
-				t_pelota.Velocidad = Vector2(t_pelota.vel_pas, 0)
+			if(t_pelota != null && !t_pelota.pase && !t_pelota.shoot):
+				t_pelota.Velocidad = Vector2(velocidad_patear, 0)
 		izquierda:
 			get_node("AnimationPlayer").call_deferred("play","pateard")
-			if(t_pelota != null):
-				t_pelota.Velocidad = Vector2(-t_pelota.vel_pas, 0)
+			if(t_pelota != null && !t_pelota.pase && !t_pelota.shoot):
+				t_pelota.Velocidad = Vector2(-velocidad_patear, 0)
 		arriba:
 			get_node("AnimationPlayer").call_deferred("play","pateararr")
-			if(t_pelota != null):
-				t_pelota.Velocidad = Vector2(0, -t_pelota.vel_pas)
+			if(t_pelota != null && !t_pelota.pase && !t_pelota.shoot):
+				t_pelota.Velocidad = Vector2(0, -velocidad_patear)
 		abajo:
 			get_node("AnimationPlayer").call_deferred("play","patearabaj")
-			if(t_pelota != null):
-				t_pelota.Velocidad = Vector2(0, t_pelota.vel_pas)
+			if(t_pelota != null && !t_pelota.pase && !t_pelota.shoot):
+				t_pelota.Velocidad = Vector2(0, velocidad_patear)
 		diagabd:
 			get_node("AnimationPlayer").call_deferred("play","pateardaba")
-			if(t_pelota != null):
-				t_pelota.Velocidad = Vector2(t_pelota.vel_pas, t_pelota.vel_pas)
+			if(t_pelota != null && !t_pelota.pase && !t_pelota.shoot):
+				t_pelota.Velocidad = Vector2(velocidad_patear, velocidad_patear)
 		diagarrd:
 			get_node("AnimationPlayer").call_deferred("play","pateardarr")
-			if(t_pelota != null):
-				t_pelota.Velocidad = Vector2(t_pelota.vel_pas, -t_pelota.vel_pas)
+			if(t_pelota != null && !t_pelota.pase && !t_pelota.shoot):
+				t_pelota.Velocidad = Vector2(velocidad_patear, -velocidad_patear)
 		diababi:
 			get_node("AnimationPlayer").call_deferred("play","pateardaba")
-			if(t_pelota != null):
-				t_pelota.Velocidad = Vector2(-t_pelota.vel_pas, t_pelota.vel_pas)
+			if(t_pelota != null && !t_pelota.pase && !t_pelota.shoot):
+				t_pelota.Velocidad = Vector2(-velocidad_patear, velocidad_patear)
 		diabarri:
 			get_node("AnimationPlayer").call_deferred("play","pateardarr")
-			if(t_pelota != null):
-				t_pelota.Velocidad = Vector2(-t_pelota.vel_pas, -t_pelota.vel_pas)
+			if(t_pelota != null && !t_pelota.pase && !t_pelota.shoot):
+				t_pelota.Velocidad = Vector2(-velocidad_patear, -velocidad_patear)
 			
 	if(t_pelota != null): #Si esta en posesion del balon en ese momento
-		t_pelota.pase = true
+		match(numero):
+			0:
+				t_pelota.pase = true
+			1:
+				t_pelota.shoot = true
+		t_pelota.get_node("AnimationPlayer").stop()
+		t_pelota.mover(Velocidad*get_node("AnimationPlayer").get_animation("Aba").length)
 
 			
 	yield(get_tree().create_timer(0.5), "timeout")

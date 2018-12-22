@@ -1,11 +1,14 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Scenes/main.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/Player2.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/Pelota.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Sprites/campo.png" type="Texture" id=5]
-[ext_resource path="res://Sprites/arco.png" type="Texture" id=6]
+[ext_resource path="res://Scenes/Arco.gd" type="Script" id=6]
+[ext_resource path="res://Sprites/arco.png" type="Texture" id=7]
+[ext_resource path="res://Scenes/Camera2D.gd" type="Script" id=8]
+[ext_resource path="res://Fonts/American Captain.ttf" type="DynamicFontData" id=9]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -17,7 +20,25 @@ extents = Vector2( 4.02122, 22.9326 )
 custom_solver_bias = 0.0
 extents = Vector2( 6.9229, 22.331 )
 
-[node name="main" type="Node2D" groups=[
+[sub_resource type="RectangleShape2D" id=3]
+
+custom_solver_bias = 0.0
+extents = Vector2( 3.05568, 105.825 )
+
+[sub_resource type="RectangleShape2D" id=4]
+
+custom_solver_bias = 0.0
+extents = Vector2( 3.41373, 105.338 )
+
+[sub_resource type="DynamicFont" id=5]
+
+size = 44
+use_mipmaps = false
+use_filter = false
+font_data = ExtResource( 9 )
+_sections_unfolded = [ "Font", "Settings" ]
+
+[node name="main" type="Node2D" index="0" groups=[
 "main",
 ]]
 
@@ -45,11 +66,13 @@ linear_damp = 0.1
 angular_damp = 1.0
 audio_bus_override = false
 audio_bus_name = "Master"
+script = ExtResource( 6 )
 _sections_unfolded = [ "Transform" ]
+equipo = 0
 
 [node name="Spr_ArcoI" type="Sprite" parent="ArcoI" index="0"]
 
-texture = ExtResource( 6 )
+texture = ExtResource( 7 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ArcoI" index="1"]
@@ -69,11 +92,13 @@ linear_damp = 0.1
 angular_damp = 1.0
 audio_bus_override = false
 audio_bus_name = "Master"
+script = ExtResource( 6 )
 _sections_unfolded = [ "Transform" ]
+equipo = 1
 
 [node name="Spr_ArcoD" type="Sprite" parent="ArcoD" index="0"]
 
-texture = ExtResource( 6 )
+texture = ExtResource( 7 )
 flip_h = true
 _sections_unfolded = [ "Offset", "Transform" ]
 
@@ -108,6 +133,43 @@ drag_margin_bottom = 0.2
 editor_draw_screen = true
 editor_draw_limits = false
 editor_draw_drag_margin = false
+script = ExtResource( 8 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="min" type="Area2D" parent="Camera2D" index="0"]
+
+editor/display_folded = true
+position = Vector2( -79.1458, -5.10312 )
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Camera2D/min" index="0"]
+
+position = Vector2( 22.7754, 4.56463 )
+shape = SubResource( 3 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="max" type="Area2D" parent="Camera2D" index="1"]
+
+editor/display_folded = true
+position = Vector2( 64.0974, 1.13341 )
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Camera2D/max" index="0"]
+
+position = Vector2( 1.33313, 0.00188446 )
+shape = SubResource( 4 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Equipo A" type="Node2D" parent="." index="4" groups=[
@@ -185,5 +247,85 @@ _sections_unfolded = [ "Transform" ]
 ]]
 
 sort_enabled = true
+
+[node name="min" type="Position2D" parent="." index="8" groups=[
+"min",
+]]
+
+position = Vector2( -255.054, -81.9292 )
+
+[node name="max" type="Position2D" parent="." index="9" groups=[
+"max",
+]]
+
+position = Vector2( 250.664, 121.431 )
+
+[node name="GUI" type="CanvasLayer" parent="." index="10"]
+
+layer = 1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+
+[node name="txt_eq1" type="Label" parent="GUI" index="0" groups=[
+"txte1",
+]]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 132.0
+margin_top = 5.0
+margin_right = 240.0
+margin_bottom = 53.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = SubResource( 5 )
+text = "EQ 1: 0"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "custom_fonts" ]
+
+[node name="txt_eq2" type="Label" parent="GUI" index="1" groups=[
+"txte2",
+]]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 749.0
+margin_top = 7.0
+margin_right = 857.0
+margin_bottom = 55.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = SubResource( 5 )
+text = "EQ 2: 0"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "custom_fonts" ]
+
+[connection signal="body_entered" from="ArcoI" to="ArcoI" method="_on_Arco_body_entered"]
+
+[connection signal="body_entered" from="ArcoD" to="ArcoI" method="_on_Arco_body_entered"]
+
+[connection signal="body_entered" from="Camera2D/min" to="Camera2D" method="_on_min_body_entered"]
+
+[connection signal="body_entered" from="Camera2D/max" to="Camera2D" method="_on_max_body_entered"]
 
 

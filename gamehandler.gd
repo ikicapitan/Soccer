@@ -5,6 +5,8 @@ var jugador_2 = 2
 var index1 = 0 #Elemento actual recorrido en la lista de jugadores
 var index2 = 0 #Elemento actual recorrido en la lista de jugadores
 
+var goles = [0,0]
+
 var target_j1 #Jugador seleccionado
 var target_j2 #Jugador seleccionado
 
@@ -36,6 +38,11 @@ func _input(event): #Procesamos globalmente todas las teclas
 		target_j1.teclas[4] = true
 	elif(Input.is_action_just_released("tecla_patear")):
 		target_j1.teclas[4] = false
+		
+	if(Input.is_action_just_pressed("tecla_pase")):
+		target_j1.teclas[5] = true
+	elif(Input.is_action_just_released("tecla_pase")):
+		target_j1.teclas[5] = false
 		
 	if(Input.is_action_just_pressed("tecla_select")):
 		index1 += 1
@@ -70,9 +77,25 @@ func _input(event): #Procesamos globalmente todas las teclas
 	elif(Input.is_action_just_released(".")):
 		target_j2.teclas[4] = false
 		
+	if(Input.is_action_just_pressed("tecla_pasej2")):
+		target_j2.teclas[5] = true
+	elif(Input.is_action_just_released("tecla_pasej2")):
+		target_j2.teclas[5] = false
+		
 	if(Input.is_action_just_pressed("tecla_select2")):
 		index2 += 1
 		if(!index2 < get_tree().get_nodes_in_group("main")[0].cant_jugadores): #Si supere cantidad de jugadores
 			index2 = 0 #Vuelvo al primer elemento
 		target_j2 = get_tree().get_nodes_in_group("Jugador2")[index2] #Selecciono objetivo a mover
 	get_tree().set_input_as_handled()
+	
+	
+	
+func gol(eq):
+	goles[eq] += 1
+	var txtnombre = "txte" + String(eq+1)
+	print(txtnombre)
+	get_tree().get_nodes_in_group(txtnombre)[0].text = "EQ " + String(eq+1) + ": " + String(goles[eq])
+
+func reset_match():
+	goles = [0,0]

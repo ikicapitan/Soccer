@@ -32,3 +32,5 @@ func spawn_teams():
 	get_tree().get_nodes_in_group("teams")[0].add_child(newBall)
 	gamehandler.target_j1 = get_tree().get_nodes_in_group("Jugador1")[0] #Marco como objetivo un jugador para poder mover
 	gamehandler.target_j2 = get_tree().get_nodes_in_group("Jugador2")[0] #Lo mismo con el equipo 2
+
+
