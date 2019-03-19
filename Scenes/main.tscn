@@ -1,331 +1,311 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Scenes/main.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/Player2.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/Pelota.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Sprites/campo.png" type="Texture" id=5]
-[ext_resource path="res://Scenes/Arco.gd" type="Script" id=6]
-[ext_resource path="res://Sprites/arco.png" type="Texture" id=7]
-[ext_resource path="res://Scenes/Camera2D.gd" type="Script" id=8]
-[ext_resource path="res://Fonts/American Captain.ttf" type="DynamicFontData" id=9]
+[ext_resource path="res://Scenes/Laterales.gd" type="Script" id=6]
+[ext_resource path="res://Scenes/Arco.gd" type="Script" id=7]
+[ext_resource path="res://Sprites/arco.png" type="Texture" id=8]
+[ext_resource path="res://Scenes/Camera2D.gd" type="Script" id=9]
+[ext_resource path="res://Fonts/American Captain.ttf" type="DynamicFontData" id=10]
 
 [sub_resource type="RectangleShape2D" id=1]
-
-custom_solver_bias = 0.0
-extents = Vector2( 4.02122, 22.9326 )
+extents = Vector2( 208.52, 4.46793 )
 
 [sub_resource type="RectangleShape2D" id=2]
-
-custom_solver_bias = 0.0
-extents = Vector2( 6.9229, 22.331 )
+extents = Vector2( 225.102, 5.30632 )
 
 [sub_resource type="RectangleShape2D" id=3]
-
-custom_solver_bias = 0.0
-extents = Vector2( 3.05568, 105.825 )
+extents = Vector2( 4.22536, 41.2573 )
 
 [sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 10, 38.3969 )
 
-custom_solver_bias = 0.0
+[sub_resource type="NavigationPolygon" id=5]
+vertices = PoolVector2Array( 206.949, -83.4941, 225.874, 124.245, -225.254, 123.805, -208.089, -83.4941 )
+polygons = [ PoolIntArray( 0, 1, 2, 3 ) ]
+outlines = [ PoolVector2Array( -208.089, -83.4941, -225.254, 123.805, 225.874, 124.245, 206.949, -83.4941 ) ]
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 4.02122, 25.2652 )
+
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 1.11489, 11.3524 )
+
+[sub_resource type="RectangleShape2D" id=8]
+extents = Vector2( 23.3253, 1.47919 )
+
+[sub_resource type="RectangleShape2D" id=9]
+extents = Vector2( 6.9229, 25.8495 )
+
+[sub_resource type="RectangleShape2D" id=10]
+extents = Vector2( 3.05568, 105.825 )
+
+[sub_resource type="RectangleShape2D" id=11]
 extents = Vector2( 3.41373, 105.338 )
 
-[sub_resource type="DynamicFont" id=5]
-
+[sub_resource type="DynamicFont" id=12]
 size = 44
-use_mipmaps = false
-use_filter = false
-font_data = ExtResource( 9 )
-_sections_unfolded = [ "Font", "Settings" ]
+font_data = ExtResource( 10 )
 
-[node name="main" type="Node2D" index="0" groups=[
+[node name="main" type="Node2D" groups=[
 "main",
 ]]
-
 script = ExtResource( 1 )
 pt_1 = ExtResource( 2 )
 pt_2 = ExtResource( 3 )
 pelota = ExtResource( 4 )
 cant_jugadores = 5
 
-[node name="BackGround" type="Sprite" parent="." index="0"]
+[node name="nav" type="Navigation2D" parent="." groups=[
+"nav",
+]]
 
+[node name="BackGround" type="Sprite" parent="nav"]
 position = Vector2( -1.32037, 20.5661 )
 z_index = -5
 texture = ExtResource( 5 )
-_sections_unfolded = [ "Z Index" ]
 
-[node name="ArcoI" type="Area2D" parent="." index="1"]
-
-editor/display_folded = true
-position = Vector2( -230.863, -7.62435 )
-input_pickable = true
-gravity_vec = Vector2( 0, 1 )
-gravity = 98.0
-linear_damp = 0.1
-angular_damp = 1.0
-audio_bus_override = false
-audio_bus_name = "Master"
+[node name="Laterales" type="Node2D" parent="nav/BackGround" groups=[
+"laterales",
+]]
 script = ExtResource( 6 )
-_sections_unfolded = [ "Transform" ]
-equipo = 0
 
-[node name="Spr_ArcoI" type="Sprite" parent="ArcoI" index="0"]
+[node name="AreaS" type="Area2D" parent="nav/BackGround/Laterales"]
+position = Vector2( 1.59567, -103.19 )
 
-texture = ExtResource( 7 )
-_sections_unfolded = [ "Transform" ]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ArcoI" index="1"]
-
-position = Vector2( 9.28787, 15.9221 )
-rotation = 0.0872133
+[node name="CollisionShape2D" type="CollisionShape2D" parent="nav/BackGround/Laterales/AreaS"]
+position = Vector2( 0.440138, -3.96112 )
 shape = SubResource( 1 )
 
-[node name="ArcoD" type="Area2D" parent="." index="2"]
-
+[node name="AreaA" type="Area2D" parent="nav/BackGround/Laterales"]
 editor/display_folded = true
-position = Vector2( 228.223, -7.62435 )
-input_pickable = true
-gravity_vec = Vector2( 0, 1 )
-gravity = 98.0
-linear_damp = 0.1
-angular_damp = 1.0
-audio_bus_override = false
-audio_bus_name = "Master"
-script = ExtResource( 6 )
-_sections_unfolded = [ "Transform" ]
-equipo = 1
+position = Vector2( 1.32037, 80.9832 )
 
-[node name="Spr_ArcoD" type="Sprite" parent="ArcoD" index="0"]
-
-texture = ExtResource( 7 )
-flip_h = true
-_sections_unfolded = [ "Offset", "Transform" ]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ArcoD" index="1"]
-
-position = Vector2( -3.98053, 15.9221 )
-rotation = -0.101799
+[node name="CollisionShape2D" type="CollisionShape2D" parent="nav/BackGround/Laterales/AreaA"]
+position = Vector2( 1.32037, 6.16176 )
 shape = SubResource( 2 )
 
-[node name="Camera2D" type="Camera2D" parent="." index="3"]
+[node name="AreaI" type="Area2D" parent="nav/BackGround/Laterales"]
+editor/display_folded = true
+position = Vector2( -228.425, -0.440125 )
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="nav/BackGround/Laterales/AreaI"]
+position = Vector2( 0, 56.3362 )
+rotation = 0.0772756
+shape = SubResource( 3 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="nav/BackGround/Laterales/AreaI"]
+position = Vector2( 11.4433, -81.8634 )
+rotation = 0.0772756
+shape = SubResource( 3 )
+
+[node name="AreaD" type="Area2D" parent="nav/BackGround/Laterales"]
+editor/display_folded = true
+position = Vector2( 234.587, 1.32038 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="nav/BackGround/Laterales/AreaD"]
+position = Vector2( 0, 51.9349 )
+rotation = -0.0907109
+shape = SubResource( 4 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="nav/BackGround/Laterales/AreaD"]
+position = Vector2( -11.4432, -80.103 )
+rotation = -0.0907109
+shape = SubResource( 4 )
+
+[node name="NavigationPolygonInstance" type="NavigationPolygonInstance" parent="nav"]
+navpoly = SubResource( 5 )
+
+[node name="ArcoI" type="Area2D" parent="." groups=[
+"arc",
+]]
+editor/display_folded = true
+position = Vector2( -230.863, -7.62435 )
+script = ExtResource( 7 )
+
+[node name="Spr_ArcoI" type="Sprite" parent="ArcoI"]
+texture = ExtResource( 8 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ArcoI"]
+position = Vector2( 9.28787, 15.9221 )
+rotation = 0.0872133
+shape = SubResource( 6 )
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="ArcoI"]
+editor/display_folded = true
+position = Vector2( -11.988, 30.222 )
+rotation = 3.13673
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ArcoI/StaticBody2D2"]
+position = Vector2( -7.6244, -11.1722 )
+rotation = 1.57544
+shape = SubResource( 7 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="ArcoI/StaticBody2D2"]
+position = Vector2( -16.1953, 40.8984 )
+rotation = 1.57544
+shape = SubResource( 7 )
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="ArcoI/StaticBody2D2"]
+position = Vector2( 0.642868, 14.9964 )
+rotation = 1.70633
+shape = SubResource( 8 )
+
+[node name="ArcoD" type="Area2D" parent="." groups=[
+"arc",
+]]
+editor/display_folded = true
+position = Vector2( 228.223, -7.62435 )
+script = ExtResource( 7 )
+equipo = 1
+
+[node name="Spr_ArcoD" type="Sprite" parent="ArcoD"]
+texture = ExtResource( 8 )
+flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ArcoD"]
+visible = false
+position = Vector2( -3.98053, 15.9221 )
+rotation = -0.101799
+shape = SubResource( 9 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="ArcoD"]
+editor/display_folded = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ArcoD/StaticBody2D"]
+position = Vector2( -6.00989, -10.5173 )
+rotation = 1.57544
+shape = SubResource( 7 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="ArcoD/StaticBody2D"]
+position = Vector2( 3.86348, 40.9959 )
+rotation = 1.57544
+shape = SubResource( 7 )
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="ArcoD/StaticBody2D"]
+position = Vector2( 9.70325, 14.717 )
+rotation = 1.44243
+shape = SubResource( 8 )
+
+[node name="Camera2D" type="Camera2D" parent="." groups=[
+"cam",
+]]
+editor/display_folded = true
 position = Vector2( -1.32037, 6.56615 )
-anchor_mode = 1
-rotating = false
 current = true
 zoom = Vector2( 0.25, 0.35 )
-limit_left = -10000000
-limit_top = -10000000
-limit_right = 10000000
-limit_bottom = 10000000
-limit_smoothed = false
-drag_margin_h_enabled = true
-drag_margin_v_enabled = true
-smoothing_enabled = false
-smoothing_speed = 5.0
-offset_v = 0.0
-offset_h = 0.0
-drag_margin_left = 0.2
-drag_margin_top = 0.2
-drag_margin_right = 0.2
-drag_margin_bottom = 0.2
-editor_draw_screen = true
-editor_draw_limits = false
-editor_draw_drag_margin = false
-script = ExtResource( 8 )
-_sections_unfolded = [ "Transform" ]
+script = ExtResource( 9 )
 
-[node name="min" type="Area2D" parent="Camera2D" index="0"]
-
+[node name="min" type="Area2D" parent="Camera2D"]
 editor/display_folded = true
 position = Vector2( -79.1458, -5.10312 )
-input_pickable = true
-gravity_vec = Vector2( 0, 1 )
-gravity = 98.0
-linear_damp = 0.1
-angular_damp = 1.0
-audio_bus_override = false
-audio_bus_name = "Master"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Camera2D/min" index="0"]
-
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Camera2D/min"]
 position = Vector2( 22.7754, 4.56463 )
-shape = SubResource( 3 )
-_sections_unfolded = [ "Transform" ]
+shape = SubResource( 10 )
 
-[node name="max" type="Area2D" parent="Camera2D" index="1"]
-
+[node name="max" type="Area2D" parent="Camera2D"]
 editor/display_folded = true
 position = Vector2( 64.0974, 1.13341 )
-input_pickable = true
-gravity_vec = Vector2( 0, 1 )
-gravity = 98.0
-linear_damp = 0.1
-angular_damp = 1.0
-audio_bus_override = false
-audio_bus_name = "Master"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Camera2D/max" index="0"]
-
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Camera2D/max"]
 position = Vector2( 1.33313, 0.00188446 )
-shape = SubResource( 4 )
-_sections_unfolded = [ "Transform" ]
+shape = SubResource( 11 )
 
-[node name="Equipo A" type="Node2D" parent="." index="4" groups=[
+[node name="Equipo A" type="Node2D" parent="." groups=[
 "equipo",
 ]]
-
 editor/display_folded = true
-_sections_unfolded = [ "Sort" ]
 
-[node name="Spawn_J1" type="Position2D" parent="Equipo A" index="0"]
-
+[node name="Spawn_J1" type="Position2D" parent="Equipo A"]
 position = Vector2( -13.3333, 13.3333 )
-_sections_unfolded = [ "Transform" ]
 
-[node name="Spawn_J2" type="Position2D" parent="Equipo A" index="1"]
-
+[node name="Spawn_J2" type="Position2D" parent="Equipo A"]
 position = Vector2( -13.3333, -13.3333 )
-_sections_unfolded = [ "Transform" ]
 
-[node name="Spawn_J3" type="Position2D" parent="Equipo A" index="2"]
-
+[node name="Spawn_J3" type="Position2D" parent="Equipo A"]
 position = Vector2( -53.3333, -53.3333 )
-_sections_unfolded = [ "Transform" ]
 
-[node name="Spawn_J4" type="Position2D" parent="Equipo A" index="3"]
-
+[node name="Spawn_J4" type="Position2D" parent="Equipo A"]
 position = Vector2( -53.3333, 53.3333 )
-_sections_unfolded = [ "Transform" ]
 
-[node name="Spawn_J5" type="Position2D" parent="Equipo A" index="4"]
-
+[node name="Spawn_J5" type="Position2D" parent="Equipo A"]
 position = Vector2( -80, 0 )
-_sections_unfolded = [ "Transform" ]
 
-[node name="Equipo B" type="Node2D" parent="." index="5" groups=[
+[node name="Equipo B" type="Node2D" parent="." groups=[
 "equipo",
 ]]
-
 editor/display_folded = true
 
-[node name="Spawn_J1" type="Position2D" parent="Equipo B" index="0"]
-
+[node name="Spawn_J1" type="Position2D" parent="Equipo B"]
 position = Vector2( 13.3333, 13.3333 )
-_sections_unfolded = [ "Transform" ]
 
-[node name="Spawn_J2" type="Position2D" parent="Equipo B" index="1"]
-
+[node name="Spawn_J2" type="Position2D" parent="Equipo B"]
 position = Vector2( 13.3333, -13.3333 )
-_sections_unfolded = [ "Transform" ]
 
-[node name="Spawn_J3" type="Position2D" parent="Equipo B" index="2"]
-
+[node name="Spawn_J3" type="Position2D" parent="Equipo B"]
 position = Vector2( 53.3333, -53.3333 )
-_sections_unfolded = [ "Transform" ]
 
-[node name="Spawn_J4" type="Position2D" parent="Equipo B" index="3"]
-
+[node name="Spawn_J4" type="Position2D" parent="Equipo B"]
 position = Vector2( 53.3333, 53.3333 )
-_sections_unfolded = [ "Transform" ]
 
-[node name="Spawn_J5" type="Position2D" parent="Equipo B" index="4"]
-
+[node name="Spawn_J5" type="Position2D" parent="Equipo B"]
 position = Vector2( 80, 0 )
-_sections_unfolded = [ "Transform" ]
 
-[node name="SP_Pelota" type="Position2D" parent="." index="6" groups=[
+[node name="SP_Pelota" type="Position2D" parent="." groups=[
 "sp",
 ]]
-
 position = Vector2( -0.487701, -13.1672 )
-_sections_unfolded = [ "Transform" ]
 
-[node name="Juego" type="YSort" parent="." index="7" groups=[
+[node name="Juego" type="YSort" parent="." groups=[
 "teams",
 ]]
 
-sort_enabled = true
-
-[node name="min" type="Position2D" parent="." index="8" groups=[
+[node name="min" type="Position2D" parent="." groups=[
 "min",
 ]]
-
 position = Vector2( -255.054, -81.9292 )
 
-[node name="max" type="Position2D" parent="." index="9" groups=[
+[node name="max" type="Position2D" parent="." groups=[
 "max",
 ]]
-
 position = Vector2( 250.664, 121.431 )
 
-[node name="GUI" type="CanvasLayer" parent="." index="10"]
+[node name="GUI" type="CanvasLayer" parent="."]
+editor/display_folded = true
 
-layer = 1
-offset = Vector2( 0, 0 )
-rotation = 0.0
-scale = Vector2( 1, 1 )
-transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-
-[node name="txt_eq1" type="Label" parent="GUI" index="0" groups=[
+[node name="txt_eq1" type="Label" parent="GUI" groups=[
 "txte1",
 ]]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
 margin_left = 132.0
 margin_top = 5.0
 margin_right = 240.0
 margin_bottom = 53.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 12 )
 text = "EQ 1: 0"
 align = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "custom_fonts" ]
 
-[node name="txt_eq2" type="Label" parent="GUI" index="1" groups=[
+[node name="txt_eq2" type="Label" parent="GUI" groups=[
 "txte2",
 ]]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
 margin_left = 749.0
 margin_top = 7.0
 margin_right = 857.0
 margin_bottom = 55.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 12 )
 text = "EQ 2: 0"
 align = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "custom_fonts" ]
 
+[node name="Sprite" type="Sprite" parent="."]
+
+[connection signal="body_entered" from="nav/BackGround/Laterales/AreaS" to="nav/BackGround/Laterales" method="_on_Area2D_body_entered"]
+[connection signal="body_entered" from="nav/BackGround/Laterales/AreaA" to="nav/BackGround/Laterales" method="_on_Area2D2_body_entered"]
+[connection signal="body_entered" from="nav/BackGround/Laterales/AreaI" to="nav/BackGround/Laterales" method="_on_Area2D3_body_entered"]
+[connection signal="body_entered" from="nav/BackGround/Laterales/AreaD" to="nav/BackGround/Laterales" method="_on_Area2D4_body_entered"]
 [connection signal="body_entered" from="ArcoI" to="ArcoI" method="_on_Arco_body_entered"]
-
 [connection signal="body_entered" from="ArcoD" to="ArcoI" method="_on_Arco_body_entered"]
-
 [connection signal="body_entered" from="Camera2D/min" to="Camera2D" method="_on_min_body_entered"]
-
 [connection signal="body_entered" from="Camera2D/max" to="Camera2D" method="_on_max_body_entered"]
-
-

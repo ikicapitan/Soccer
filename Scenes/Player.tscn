@@ -1,19 +1,14 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://Scenes/Player.gd" type="Script" id=1]
 [ext_resource path="res://Sprites/jugador.png" type="Texture" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-
-custom_solver_bias = 0.0
 extents = Vector2( 2.90765, 2.23906 )
 
 [sub_resource type="Animation" id=2]
-
 resource_name = "Aba"
 length = 0.3
-loop = false
-step = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -28,11 +23,8 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=3]
-
 resource_name = "Arr"
 length = 0.3
-loop = false
-step = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -47,10 +39,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=4]
-
 length = 0.3
-loop = false
-step = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -65,10 +54,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=5]
-
 length = 0.3
-loop = false
-step = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -83,10 +69,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=6]
-
 length = 0.3
-loop = false
-step = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -101,10 +84,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=7]
-
-length = 0.2
-loop = false
-step = 0.1
+length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -112,17 +92,14 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1 ),
+"times": PoolRealArray( 0, 0.2 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ 12, 13 ]
 }
 
 [sub_resource type="Animation" id=8]
-
 length = 0.1
-loop = false
-step = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -137,10 +114,135 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=9]
+resource_name = "lat_abi"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 28 ]
+}
 
+[sub_resource type="Animation" id=10]
+resource_name = "lat_abi2"
 length = 0.3
-loop = false
-step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 29 ]
+}
+
+[sub_resource type="Animation" id=11]
+resource_name = "lat_abm"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 31 ]
+}
+
+[sub_resource type="Animation" id=12]
+resource_name = "lat_abm2"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 32 ]
+}
+
+[sub_resource type="Animation" id=13]
+resource_name = "lat_arri"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 22 ]
+}
+
+[sub_resource type="Animation" id=14]
+resource_name = "lat_arri2"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 23 ]
+}
+
+[sub_resource type="Animation" id=15]
+resource_name = "lat_arrm"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 25 ]
+}
+
+[sub_resource type="Animation" id=16]
+resource_name = "lat_arrm2"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 26 ]
+}
+
+[sub_resource type="Animation" id=17]
+length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -154,11 +256,8 @@ tracks/0/keys = {
 "values": [ 17 ]
 }
 
-[sub_resource type="Animation" id=10]
-
+[sub_resource type="Animation" id=18]
 length = 0.3
-loop = false
-step = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -172,11 +271,8 @@ tracks/0/keys = {
 "values": [ 16 ]
 }
 
-[sub_resource type="Animation" id=11]
-
+[sub_resource type="Animation" id=19]
 length = 0.3
-loop = false
-step = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -190,11 +286,8 @@ tracks/0/keys = {
 "values": [ 18 ]
 }
 
-[sub_resource type="Animation" id=12]
-
+[sub_resource type="Animation" id=20]
 length = 0.3
-loop = false
-step = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -208,11 +301,8 @@ tracks/0/keys = {
 "values": [ 14 ]
 }
 
-[sub_resource type="Animation" id=13]
-
+[sub_resource type="Animation" id=21]
 length = 0.3
-loop = false
-step = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -226,49 +316,31 @@ tracks/0/keys = {
 "values": [ 15 ]
 }
 
-[sub_resource type="RectangleShape2D" id=14]
-
-custom_solver_bias = 0.0
+[sub_resource type="RectangleShape2D" id=22]
 extents = Vector2( 6.07366, 11.5536 )
 
 [node name="Player" type="KinematicBody2D" groups=[
 "player",
 ]]
-
 z_as_relative = false
-input_pickable = false
-collision_layer = 1
-collision_mask = 1
-collision/safe_margin = 0.08
 script = ExtResource( 1 )
-_sections_unfolded = [ "Transform" ]
 vel_desp = 6.0
 vel_desp_b = 15.0
 
-[node name="Sprite" type="Sprite" parent="." index="0"]
-
+[node name="Sprite" type="Sprite" parent="."]
 modulate = Color( 0.996094, 0.996094, 0.996094, 1 )
 position = Vector2( -1.05774, 0 )
 scale = Vector2( 0.867783, 1 )
 z_as_relative = false
 texture = ExtResource( 2 )
 hframes = 34
-frame = 4
-_sections_unfolded = [ "Material", "Offset", "Region", "Z Index" ]
+frame = 3
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
-
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( -0.817764, 9.94097 )
 shape = SubResource( 1 )
-_sections_unfolded = [ "Transform" ]
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="2"]
-
-root_node = NodePath("..")
-autoplay = ""
-playback_process_mode = 1
-playback_default_blend_time = 0.0
-playback_speed = 1.0
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Aba = SubResource( 2 )
 anims/Arr = SubResource( 3 )
 anims/der = SubResource( 4 )
@@ -276,31 +348,28 @@ anims/diaba = SubResource( 5 )
 anims/diarr = SubResource( 6 )
 anims/gol = SubResource( 7 )
 anims/idle = SubResource( 8 )
-anims/patearabaj = SubResource( 9 )
-anims/pateararr = SubResource( 10 )
-anims/pateard = SubResource( 11 )
-anims/pateardaba = SubResource( 12 )
-anims/pateardarr = SubResource( 13 )
-blend_times = [  ]
+anims/lat_abi = SubResource( 9 )
+anims/lat_abi2 = SubResource( 10 )
+anims/lat_abm = SubResource( 11 )
+anims/lat_abm2 = SubResource( 12 )
+anims/lat_arri = SubResource( 13 )
+anims/lat_arri2 = SubResource( 14 )
+anims/lat_arrm = SubResource( 15 )
+anims/lat_arrm2 = SubResource( 16 )
+anims/patearabaj = SubResource( 17 )
+anims/pateararr = SubResource( 18 )
+anims/pateard = SubResource( 19 )
+anims/pateardaba = SubResource( 20 )
+anims/pateardarr = SubResource( 21 )
 
-[node name="Area2D" type="Area2D" parent="." index="3"]
+[node name="Area2D" type="Area2D" parent="."]
 
-input_pickable = true
-gravity_vec = Vector2( 0, 1 )
-gravity = 98.0
-linear_damp = 0.1
-angular_damp = 1.0
-audio_bus_override = false
-audio_bus_name = "Master"
-_sections_unfolded = [ "Transform" ]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" index="0"]
-
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2( -0.770218, 1.54044 )
-shape = SubResource( 14 )
+shape = SubResource( 22 )
+
+[node name="pelota_lateral" type="Position2D" parent="."]
+position = Vector2( 0, -23.201 )
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
-
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
-
-

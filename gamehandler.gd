@@ -5,7 +5,14 @@ var jugador_2 = 2
 var index1 = 0 #Elemento actual recorrido en la lista de jugadores
 var index2 = 0 #Elemento actual recorrido en la lista de jugadores
 
+var momento_gol = false
+var instancia_lateral = false
+var equipo_lateral = 0
+var tipo_lateral #0 arriba, 1 abajo, 2 izq arr, 3 izq aba, 4 der arr, 5 der aba
+
 var goles = [0,0]
+
+var pelota #La pelota de todo el juego men
 
 var target_j1 #Jugador seleccionado
 var target_j2 #Jugador seleccionado
@@ -90,12 +97,31 @@ func _input(event): #Procesamos globalmente todas las teclas
 	get_tree().set_input_as_handled()
 	
 	
-	
 func gol(eq):
 	goles[eq] += 1
 	var txtnombre = "txte" + String(eq+1)
-	print(txtnombre)
 	get_tree().get_nodes_in_group(txtnombre)[0].text = "EQ " + String(eq+1) + ": " + String(goles[eq])
+	momento_gol = true
+	var jugadores = get_tree().get_nodes_in_group("player")
+	var pelota = get_tree().get_nodes_in_group("pelota")[0]
+	var cam = get_tree().get_nodes_in_group("cam")[0]
+	for j in jugadores:
+		j.volver_spawn()
+		j.festejar_gol(eq+1, jugadores, pelota)
+	yield(get_tree().create_timer(3.0), "timeout")
+	
+	pelota.global_position = get_tree().get_nodes_in_group("sp")[0].global_position
+	pelota.pos_actual = get_tree().get_nodes_in_group("pelota")[0].global_position
+	cam.gol()
+	yield(get_tree().create_timer(5.0), "timeout")
+	momento_gol = false
+	for j in jugadores:
+		j.fin_festejo(jugadores, pelota)
+	cam.gol = false
 
 func reset_match():
 	goles = [0,0]
+
+
+func inicio():
+	pelota = get_tree().get_nodes_in_group("pelota")[0]
