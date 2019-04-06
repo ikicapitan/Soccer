@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/jugador2.png-2fd86499a7923239fa767a4cf124db67.stex"
+path="res://.import/arquero2.png-5bd6324d8d3f12a22eb2ba8c2da8683f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/jugador2.png"
-dest_files=[ "res://.import/jugador2.png-2fd86499a7923239fa767a4cf124db67.stex" ]
+source_file="res://Sprites/arquero2.png"
+dest_files=[ "res://.import/arquero2.png-5bd6324d8d3f12a22eb2ba8c2da8683f.stex" ]
 
 [params]
 

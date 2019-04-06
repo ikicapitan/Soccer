@@ -6,8 +6,13 @@ var dim_original #Dimension original del Sprite del balon
 var dim_maxima #Dimension maxima que tomara el balon al patearse (pase)
 var posl_o #Posicion original del balon local (cuando no hay pase)
 var posl_m #Posicion que separa al balon de la sombra cuando hay pase (pos maxima)
+var ult_toque = 0 #Que equipo toco ultimo el balon
+var target #Que jugador la tiene actualmente
 export (float) var vel_pas #Velocidad de pase
 export (float) var vel_shoot #Velocidad de disparo
+export (float) var vel_saq #Velocidad de saque manos
+export (float) var vel_corner #Velocidad de corner
+export (float) var vel_arq #Velocidad saque arco
 
 var pase = false
 var shoot = false #Patear
@@ -29,6 +34,20 @@ func _physics_process(delta):
 	
 	var obj_colisionado = move_and_collide(Velocidad * delta)
 	
+	if(obj_colisionado != null && obj_colisionado.collider.is_in_group("arquero") && target == null):
+		if(abs(get_node("CollisionShape2D").position.distance_to(obj_colisionado.collider.get_node("CollisionShape2D").position)) < 4): #Si estan proximos la pelota y el jugador
+			#Atajar	
+			gamehandler.saque_arco()
+			target = obj_colisionado.collider
+			
+			target.get_node("AnimationPlayer").play("at_der")
+			if(gamehandler.pelota.global_position.x < 0):
+				target.direccion = target.direcciones.derecha
+			else:
+				target.direccion = target.direcciones.izquierda
+			#target = null
+			
+			yield(get_tree().create_timer(1.5), "timeout") #Espero 1 segundo
 	
 	if(pase): #Si esta en proceso de pase (fue pateado para un pase)
 		pase(delta)
@@ -61,12 +80,12 @@ func pase(delta):
 		$Sprite.position-= delta * posl_m / (get_node("AnimationPlayer").get_animation("anim_airder").length / 3)
 	
 	if($Sprite.scale > dim_original + dim_maxima / 3): #Al alcanzar cierta altura deshabilito el colisionador de la bola
-		excepciones(true)
+		excepciones(true) #Agrega excepcion de colision con los player
 	else:
-		excepciones(false)
+		excepciones(false) #Quita la excepcion de colision con los player
 		
 		
-func excepciones(valor):
+func excepciones(valor): #Agrega o quita excepcion colision de pelota con players
 	var jugadores = get_tree().get_nodes_in_group("player")
 	if(valor):
 		for j in jugadores:
@@ -74,6 +93,7 @@ func excepciones(valor):
 	else:
 		for j in jugadores:
 			remove_collision_exception_with(j)	
+			
 		
 
 
@@ -95,7 +115,7 @@ func mover(vel):
 		else:
 			get_node("AnimationPlayer").play("anim_airizq")
 			
-			
+
 func _on_AnimationPlayer_animation_finished(anim_name):
 	Velocidad = Vector2(0,0) #Se termina la animacion, reseteo velocidad a 0
 	pos_actual = global_position #Actualizo la posicion actual al terminar animacion
@@ -103,3 +123,4 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	shoot = false
 	$Sprite.scale = dim_original
 	$Sprite.position = posl_o
+	

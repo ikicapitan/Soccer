@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/jugador2.png-2fd86499a7923239fa767a4cf124db67.stex"
+path="res://.import/soccer Godot Atrapada 27 x 26.png-2f22bc7afa69a062bca130e685f82582.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/jugador2.png"
-dest_files=[ "res://.import/jugador2.png-2fd86499a7923239fa767a4cf124db67.stex" ]
+source_file="res://Sprites/soccer Godot Atrapada 27 x 26.png"
+dest_files=[ "res://.import/soccer Godot Atrapada 27 x 26.png-2f22bc7afa69a062bca130e685f82582.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
