@@ -152,9 +152,22 @@ anims/mov_izq = SubResource( 7 )
 [node name="Area2D" type="Area2D" parent="." groups=[
 "ball",
 ]]
+editor/display_folded = true
 position = Vector2( 0.257027, 13.7508 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 8 )
+
+[node name="t_p1" type="Position2D" parent="."]
+position = Vector2( 14.8946, 1.46504 )
+
+[node name="t_p2" type="Position2D" parent="."]
+position = Vector2( 14.8946, 25.5161 )
+
+[node name="t_e" type="Position2D" parent="."]
+position = Vector2( 6.3485, 13.9179 )
+
+[node name="bola" type="Position2D" parent="."]
+position = Vector2( 3.66259, 13.9179 )
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

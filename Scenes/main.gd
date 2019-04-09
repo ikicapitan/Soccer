@@ -31,11 +31,15 @@ func spawn_teams():
 				newJugador.add_to_group("Jugador2")
 				var vel_desp_b = newJugador.vel_desp_b
 				var vel_desp = newJugador.vel_desp
-				newJugador.set_script(script_IA)
+				if(gamehandler.players == 1):
+					newJugador.set_script(script_IA)
+					newJugador.IA = true
+					newJugador.vel_desp_b = vel_desp_b
+					newJugador.vel_desp = vel_desp
+				else:
+					newJugador.IA = false
 				newJugador.team = 2
-				newJugador.IA = true
-				newJugador.vel_desp_b = vel_desp_b
-				newJugador.vel_desp = vel_desp
+				
 			newJugador.global_position = equipos[team].get_node(nombre_nodo).global_position
 			newJugador.p_spawn = equipos[team].get_node(nombre_nodo)
 			get_tree().get_nodes_in_group("teams")[0].add_child(newJugador)

@@ -1,0 +1,98 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Scenes/Menu.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/main.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Fonts/American Captain.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://Sprites/fondo.png" type="Texture" id=4]
+[ext_resource path="res://Sprites/plantilla.png" type="Texture" id=5]
+[ext_resource path="res://Sprites/ball.png" type="Texture" id=6]
+[ext_resource path="res://bgm/soccer_01.ogg" type="AudioStream" id=7]
+
+[sub_resource type="DynamicFont" id=1]
+size = 44
+font_data = ExtResource( 3 )
+
+[sub_resource type="Animation" id=2]
+resource_name = "cartel"
+length = 1.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("cartel:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5 ]
+}
+
+[node name="main" type="Node2D" groups=[
+"main",
+]]
+script = ExtResource( 1 )
+juego = ExtResource( 2 )
+
+[node name="GUI" type="CanvasLayer" parent="."]
+editor/display_folded = true
+
+[node name="txt_eq1" type="Label" parent="GUI" groups=[
+"txte1",
+]]
+margin_left = 431.566
+margin_top = 379.458
+margin_right = 558.566
+margin_bottom = 427.458
+custom_fonts/font = SubResource( 1 )
+text = "1 PLAYER"
+align = 1
+
+[node name="txt_eq2" type="Label" parent="GUI" groups=[
+"txte2",
+]]
+margin_left = 428.562
+margin_top = 447.755
+margin_right = 559.562
+margin_bottom = 495.755
+custom_fonts/font = SubResource( 1 )
+text = "2 PLAYER"
+align = 1
+
+[node name="bckg" type="Sprite" parent="GUI"]
+position = Vector2( 550.04, 299.596 )
+scale = Vector2( 6342.83, 4033.48 )
+z_index = -2
+texture = ExtResource( 4 )
+vframes = 6
+hframes = 4
+
+[node name="cartel" type="Sprite" parent="GUI"]
+position = Vector2( 502.586, 182.139 )
+scale = Vector2( 3.15836, 2.21175 )
+z_index = -1
+texture = ExtResource( 5 )
+vframes = 6
+hframes = 4
+frame = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="GUI"]
+autoplay = "cartel"
+anims/cartel = SubResource( 2 )
+
+[node name="select" type="Sprite" parent="GUI"]
+position = Vector2( 392.874, 396.557 )
+texture = ExtResource( 6 )
+
+[node name="op1" type="Position2D" parent="GUI"]
+position = Vector2( 391.646, 395.329 )
+
+[node name="op2" type="Position2D" parent="GUI"]
+position = Vector2( 390.418, 465.31 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+volume_db = 12.156
+autoplay = true
+

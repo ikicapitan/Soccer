@@ -14,7 +14,11 @@ var equipo_gol = false
 var en_lateral = false
 var momento_saque = false
 
-var moviendo = false;
+var moviendo = false
+var mov_p = false #Moviendose hacia el punto previo al balon
+var mov_b = false #Moviendose hacia el balon centrado
+var mov_c = false #Moviendose para tocar el balon
+
 
 func _ready():
 	vel_desp -= 3
@@ -83,17 +87,31 @@ func _physics_process(delta):
 				get_node("AnimationPlayer").play("idle")
 				Velocidad = Vector2(0,0)
 
-		else:
-			pass
+		else: #Se termino de mover
 			#if(!momento_saque):
 			#	momento_saque = true
 			#else: #Si es IA y no esta en momento saque
-			#	if(gamehandler.pelota.target == self):
-			#
-			#		pass #Avanzar hacia el arco contrario
+			if(mov_p): #Posiciona cerca
+				mov_p = false
+				mov_b = true
+				mov_c = false
+			elif(mov_b): #Centra
+				mov_p = false
+				mov_b = false
+				mov_c = true
+			elif(mov_c): #Toca la pelota
+				mov_p = false
+				mov_b = false
+				mov_c = true
+				
+			if(gamehandler.pelota.target == self):
+				mov_c = false
+				arco_IA_contrario()
+				create_path()
 			#	else: #Sino buscar pelota
 			#check_distancia_IA()
 
+			
 
 func check_distancia_IA(): #CHequea distancia entre punto spawn jugador y pelota
 	path = []
@@ -105,12 +123,20 @@ func check_distancia_IA(): #CHequea distancia entre punto spawn jugador y pelota
 		else:
 			arco_IA_contrario()
 			create_path()
-	elif(d <= 70):
+	elif(d <= 70): #Se dirige al punto previo
 		target = gamehandler.pelota
-		create_path_ball()
-	elif(d > 70):
+		if(!mov_b && !mov_p && !mov_c):#Punto previo
+			create_path_tp()
+		elif(!mov_p && mov_b &&!mov_c): #Centrando
+			create_path_ball()
+		elif(mov_c && !mov_p && !mov_b): #Colisionando
+			create_path_col()
+
+	elif(d > 70): #Vuelve al punto de Spawn
 		target = p_spawn
 		create_path()
+		mov_p = false
+		mov_b = false
 		
 	path.remove(0)
 
@@ -298,9 +324,20 @@ func patear(numero): #Numero 0 es pase, numero 1 es patear
 		direcciones.diabarri:
 			get_node("AnimationPlayer").play("diarr")
 
-func create_path_ball(): #Crea el camino a tal punto
+func create_path_tp(): #Crea el camino a punto previo a la bola
 	var nav = get_tree().get_nodes_in_group("nav")[0] #Obtengo el nodo navigation2D
-	path = nav.get_simple_path(position, target.pos_actual, false) #Genero el camino
+	if(global_position.y < target.get_node("t_e").global_position.y):
+		path = nav.get_simple_path(position, target.get_node("t_p2").global_position, false) #Genero el camino
+	else:
+		path = nav.get_simple_path(position, target.get_node("t_p1").global_position, false) #Genero el camino
+
+func create_path_col(): #Crea el camino a tal punto
+	var nav = get_tree().get_nodes_in_group("nav")[0] #Obtengo el nodo navigation2D
+	path = nav.get_simple_path(position, target.get_node("bola").global_position, false) #Genero el camino
+
+func create_path_ball(): #Crea el camino a centrado
+	var nav = get_tree().get_nodes_in_group("nav")[0] #Obtengo el nodo navigation2D
+	path = nav.get_simple_path(position, target.get_node("t_e").global_position, false) #Genero el camino
 
 func create_path(): #Crea el camino a tal punto
 	var nav = get_tree().get_nodes_in_group("nav")[0] #Obtengo el nodo navigation2D
