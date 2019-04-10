@@ -14,15 +14,18 @@ var equipo_gol = false
 var en_lateral = false
 var momento_saque = false
 
+var enfriamiento_regreso = false
+
 var moviendo = false
 var mov_p = false #Moviendose hacia el punto previo al balon
 var mov_b = false #Moviendose hacia el balon centrado
 var mov_c = false #Moviendose para tocar el balon
-
+var mov_a = false #Moviendose hacia el arco
 
 func _ready():
 	vel_desp -= 3
 	vel_desp_b -= 3
+	$tmr.connect("timeout",self,"_on_tmr_timeout")
 
 func _physics_process(delta):
 
@@ -86,29 +89,43 @@ func _physics_process(delta):
 				path.remove(0) #Si alcanzamos removemos el nodo path para chequear el proximo
 				get_node("AnimationPlayer").play("idle")
 				Velocidad = Vector2(0,0)
+				if(mov_p): #Posiciona cerca
+					mov_p = false
+					mov_b = true
+					mov_c = false
+				elif(mov_b): #Centra
+					mov_p = false
+					mov_b = false
+					mov_c = true
+				elif(mov_c): #Toca la pelota
+					mov_p = false
+					mov_b = false
+					mov_c = true
 
-		else: #Se termino de mover
+		#else: #Se termino de mover
 			#if(!momento_saque):
 			#	momento_saque = true
 			#else: #Si es IA y no esta en momento saque
-			if(mov_p): #Posiciona cerca
-				mov_p = false
-				mov_b = true
-				mov_c = false
-			elif(mov_b): #Centra
-				mov_p = false
-				mov_b = false
-				mov_c = true
-			elif(mov_c): #Toca la pelota
-				mov_p = false
-				mov_b = false
-				mov_c = true
+
 				
-			if(gamehandler.pelota.target == self):
-				mov_c = false
-				arco_IA_contrario()
-				create_path()
-			#	else: #Sino buscar pelota
+		if(gamehandler.pelota.target == self):
+			mov_a = true
+			$tmr.stop() #Reseteo
+			$tmr.start() #Empiezo
+			
+			var jugadores = get_tree().get_nodes_in_group("player")
+			for j in jugadores:
+				if(j.team == team && j != self):
+					j.mov_c = false
+					j.mov_b = false
+					j.mov_p = false
+					j.enfriamiento_regreso = true
+					yield(get_tree().create_timer(2.0),"timeout")
+					j.enfriamiento_regreso = false
+			#arco_IA_contrario()
+			#create_path()
+			#mov_a = true
+			#else: #Sino buscar pelota
 			#check_distancia_IA()
 
 			
@@ -116,7 +133,15 @@ func _physics_process(delta):
 func check_distancia_IA(): #CHequea distancia entre punto spawn jugador y pelota
 	path = []
 	var d = p_spawn.global_position.distance_to(gamehandler.pelota.global_position)
-	if(gamehandler.pelota.target != null):
+	if(mov_a): #Si tengo la pelota hace un instante
+		#arco_IA_contrario()
+		create_path_col()
+	elif(enfriamiento_regreso):
+		target = p_spawn
+		create_path()
+		mov_p = false
+		mov_b = false
+	elif(gamehandler.pelota.target != null):
 		if(gamehandler.pelota.target != self):
 			check_IA_possesion()
 			create_path()
@@ -125,7 +150,8 @@ func check_distancia_IA(): #CHequea distancia entre punto spawn jugador y pelota
 			create_path()
 	elif(d <= 70): #Se dirige al punto previo
 		target = gamehandler.pelota
-		if(!mov_b && !mov_p && !mov_c):#Punto previo
+		if(!mov_b && !mov_c):#Punto previo
+			mov_p = true
 			create_path_tp()
 		elif(!mov_p && mov_b &&!mov_c): #Centrando
 			create_path_ball()
@@ -333,7 +359,7 @@ func create_path_tp(): #Crea el camino a punto previo a la bola
 
 func create_path_col(): #Crea el camino a tal punto
 	var nav = get_tree().get_nodes_in_group("nav")[0] #Obtengo el nodo navigation2D
-	path = nav.get_simple_path(position, target.get_node("bola").global_position, false) #Genero el camino
+	path = nav.get_simple_path(position, gamehandler.pelota.get_node("bola").global_position, false) #Genero el camino
 
 func create_path_ball(): #Crea el camino a centrado
 	var nav = get_tree().get_nodes_in_group("nav")[0] #Obtengo el nodo navigation2D
@@ -387,3 +413,7 @@ func exception_eq(estado):
 		for j in jugadores:
 			remove_collision_exception_with(j)
 			remove_collision_exception_with(get_tree().get_nodes_in_group("pelota")[0])
+
+
+func _on_tmr_timeout():
+	mov_a = false

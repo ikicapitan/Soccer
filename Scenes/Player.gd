@@ -443,3 +443,5 @@ func exception_eq(estado):
 			remove_collision_exception_with(j)
 			remove_collision_exception_with(get_tree().get_nodes_in_group("pelota")[0])
 			
+
+
