@@ -263,7 +263,11 @@ func exception_eq(estado):
 			remove_collision_exception_with(j)
 			remove_collision_exception_with(get_tree().get_nodes_in_group("pelota")[0])
 			
-func festejar_gol():
+func festejar_gol(equipo, lista_j, pelota):
+	pass
+	
+	
+func fin_festejo(lista_j, pelota):
 	pass
 	
 func regreso_half(lista_j):

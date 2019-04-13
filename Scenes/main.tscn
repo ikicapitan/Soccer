@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://Scenes/main.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
@@ -7,13 +7,14 @@
 [ext_resource path="res://Scenes/Arquero2.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/Pelota.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/IA.gd" type="Script" id=7]
-[ext_resource path="res://Sprites/campo.png" type="Texture" id=8]
-[ext_resource path="res://Scenes/Laterales.gd" type="Script" id=9]
-[ext_resource path="res://Scenes/Arco.gd" type="Script" id=10]
-[ext_resource path="res://Sprites/arco.png" type="Texture" id=11]
-[ext_resource path="res://Scenes/Camera2D.gd" type="Script" id=12]
-[ext_resource path="res://Fonts/American Captain.ttf" type="DynamicFontData" id=13]
-[ext_resource path="res://Scenes/Timer.gd" type="Script" id=14]
+[ext_resource path="res://Scenes/IA_ARQ.gd" type="Script" id=8]
+[ext_resource path="res://Sprites/campo.png" type="Texture" id=9]
+[ext_resource path="res://Scenes/Laterales.gd" type="Script" id=10]
+[ext_resource path="res://Scenes/Arco.gd" type="Script" id=11]
+[ext_resource path="res://Sprites/arco.png" type="Texture" id=12]
+[ext_resource path="res://Scenes/Camera2D.gd" type="Script" id=13]
+[ext_resource path="res://Fonts/American Captain.ttf" type="DynamicFontData" id=14]
+[ext_resource path="res://Scenes/Timer.gd" type="Script" id=15]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 207.368, 4.46793 )
@@ -52,7 +53,7 @@ extents = Vector2( 3.41373, 105.338 )
 
 [sub_resource type="DynamicFont" id=12]
 size = 44
-font_data = ExtResource( 13 )
+font_data = ExtResource( 14 )
 
 [node name="main" type="Node2D" groups=[
 "main",
@@ -65,6 +66,7 @@ ar_2 = ExtResource( 5 )
 pelota = ExtResource( 6 )
 cant_jugadores = 5
 script_IA = ExtResource( 7 )
+IA_ARQ = ExtResource( 8 )
 
 [node name="nav" type="Navigation2D" parent="." groups=[
 "nav",
@@ -75,12 +77,12 @@ editor/display_folded = true
 editor/display_folded = true
 position = Vector2( -1.32037, 20.5661 )
 z_index = -5
-texture = ExtResource( 8 )
+texture = ExtResource( 9 )
 
 [node name="Laterales" type="Node2D" parent="nav/BackGround" groups=[
 "laterales",
 ]]
-script = ExtResource( 9 )
+script = ExtResource( 10 )
 
 [node name="AreaS" type="Area2D" parent="nav/BackGround/Laterales"]
 editor/display_folded = true
@@ -167,10 +169,10 @@ navpoly = SubResource( 5 )
 ]]
 editor/display_folded = true
 position = Vector2( -230.863, -7.62435 )
-script = ExtResource( 10 )
+script = ExtResource( 11 )
 
 [node name="Spr_ArcoI" type="Sprite" parent="ArcoI"]
-texture = ExtResource( 11 )
+texture = ExtResource( 12 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ArcoI"]
 position = Vector2( 9.28787, 15.9221 )
@@ -198,6 +200,7 @@ rotation = 1.70633
 shape = SubResource( 8 )
 
 [node name="CollArquero" type="Node2D" parent="ArcoI"]
+editor/display_folded = true
 
 [node name="StaticBody2D" type="StaticBody2D" parent="ArcoI/CollArquero"]
 editor/display_folded = true
@@ -210,16 +213,20 @@ polygon = PoolVector2Array( 449.82, 68.5434, 439.832, -39.6676, 386.321, -39.667
 [node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="ArcoI/CollArquero/StaticBody2D"]
 polygon = PoolVector2Array( 451.247, 69.9703, 393.218, 69.7325, 386.083, -42.0458, 383.943, -41.808, 391.077, 71.8729, 451.485, 72.3486 )
 
+[node name="area_disparo" type="Position2D" parent="ArcoI" groups=[
+"a_d",
+]]
+position = Vector2( 78.6062, 7.108 )
+
 [node name="ArcoD" type="Area2D" parent="." groups=[
 "arc",
 ]]
-editor/display_folded = true
 position = Vector2( 228.223, -7.62435 )
-script = ExtResource( 10 )
+script = ExtResource( 11 )
 equipo = 1
 
 [node name="Spr_ArcoD" type="Sprite" parent="ArcoD"]
-texture = ExtResource( 11 )
+texture = ExtResource( 12 )
 flip_h = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ArcoD"]
@@ -247,6 +254,7 @@ rotation = 1.44243
 shape = SubResource( 8 )
 
 [node name="CollArquero" type="Node2D" parent="ArcoD"]
+editor/display_folded = true
 
 [node name="StaticBody2D" type="StaticBody2D" parent="ArcoD/CollArquero"]
 collision_layer = 8
@@ -258,6 +266,11 @@ polygon = PoolVector2Array( -448.668, 72.5403, -448.668, 69.9051, -390.957, 70.1
 [node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="ArcoD/CollArquero/StaticBody2D"]
 polygon = PoolVector2Array( -448.931, 69.3781, -447.35, 68.851, -436.546, -39.9825, -383.842, -39.719, -383.842, -42.6177, -439.181, -42.0906 )
 
+[node name="area_salida" type="Position2D" parent="ArcoD" groups=[
+"a_s",
+]]
+position = Vector2( -56.0278, 7.52612 )
+
 [node name="Camera2D" type="Camera2D" parent="." groups=[
 "cam",
 ]]
@@ -265,7 +278,7 @@ editor/display_folded = true
 position = Vector2( -1.32037, 6.56615 )
 current = true
 zoom = Vector2( 0.25, 0.35 )
-script = ExtResource( 12 )
+script = ExtResource( 13 )
 
 [node name="min" type="Area2D" parent="Camera2D"]
 editor/display_folded = true
@@ -286,7 +299,6 @@ shape = SubResource( 11 )
 [node name="Equipo A" type="Node2D" parent="." groups=[
 "equipo",
 ]]
-editor/display_folded = true
 
 [node name="Spawn_J1" type="Position2D" parent="Equipo A"]
 position = Vector2( -13.3333, 13.3333 )
@@ -390,7 +402,7 @@ align = 1
 
 [node name="Timer" type="Timer" parent="GUI"]
 autostart = true
-script = ExtResource( 14 )
+script = ExtResource( 15 )
 
 [node name="Sprite" type="Sprite" parent="."]
 

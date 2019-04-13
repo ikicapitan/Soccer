@@ -7,6 +7,7 @@ export (PackedScene) var ar_2 #Arquero Eq 1
 export (PackedScene) var pelota
 export (int) var cant_jugadores
 export (Script) var script_IA
+export (Script) var IA_ARQ
 
 
 func _ready():
@@ -32,7 +33,7 @@ func spawn_teams():
 				var vel_desp_b = newJugador.vel_desp_b
 				var vel_desp = newJugador.vel_desp
 				if(gamehandler.players == 1):
-					newJugador.set_script(script_IA)
+					#newJugador.set_script(script_IA) MOMENTANEO
 					newJugador.IA = true
 					newJugador.vel_desp_b = vel_desp_b
 					newJugador.vel_desp = vel_desp
@@ -67,10 +68,10 @@ func crear_arqueros():
 		else:
 			newJugador = ar_2.instance()
 			newJugador.add_to_group("Jugador2")
-			if(newJugador.IA):
+			if(gamehandler.players == 1):
 				var vel_desp_b = newJugador.vel_desp_b
 				var vel_desp = newJugador.vel_desp
-				newJugador.set_script(script_IA)
+				newJugador.set_script(IA_ARQ)
 				newJugador.team = 2
 				newJugador.IA = true
 				newJugador.vel_desp_b = vel_desp_b
@@ -79,6 +80,8 @@ func crear_arqueros():
 		newJugador.global_position = equipos[team].get_node(nombre_nodo).global_position
 		newJugador.p_spawn = equipos[team].get_node(nombre_nodo)
 		get_tree().get_nodes_in_group("teams")[0].add_child(newJugador)
+		gamehandler.a_d = get_tree().get_nodes_in_group("a_d")[0] #Area disparo IA
+			
 			
 func crear_balon():
 	#Se crea la pelota

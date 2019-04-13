@@ -22,6 +22,8 @@ var target_j2 #Jugador seleccionado
 var ar_1
 var ar_2
 
+var a_d #Area disparo para IA
+
 #Var tiempo
 enum estados {fase_1, fase_2, fase_3} #Fase 1: Primer tiempo, fase 2: segundo tiempo, fase 3 final 
 var e_actual = estados.fase_1
