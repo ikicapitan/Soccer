@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/soccer_02.ogg-a5d4c9ef6722357c4746c8a9e96898fc.oggstr"
+
+[deps]
+
+source_file="res://bgm/soccer_02.ogg"
+dest_files=[ "res://.import/soccer_02.ogg-a5d4c9ef6722357c4746c8a9e96898fc.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

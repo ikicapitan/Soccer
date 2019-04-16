@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://Scenes/main.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
@@ -15,6 +15,11 @@
 [ext_resource path="res://Scenes/Camera2D.gd" type="Script" id=13]
 [ext_resource path="res://Fonts/American Captain.ttf" type="DynamicFontData" id=14]
 [ext_resource path="res://Scenes/Timer.gd" type="Script" id=15]
+[ext_resource path="res://bgm/soccer_02.ogg" type="AudioStream" id=16]
+[ext_resource path="res://bgm/SFX 2.ogg" type="AudioStream" id=17]
+[ext_resource path="res://bgm/SFX 3.ogg" type="AudioStream" id=18]
+[ext_resource path="res://bgm/SFX 5.ogg" type="AudioStream" id=19]
+[ext_resource path="res://bgm/SFX 6.ogg" type="AudioStream" id=20]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 207.368, 4.46793 )
@@ -221,6 +226,7 @@ position = Vector2( 78.6062, 7.108 )
 [node name="ArcoD" type="Area2D" parent="." groups=[
 "arc",
 ]]
+editor/display_folded = true
 position = Vector2( 228.223, -7.62435 )
 script = ExtResource( 11 )
 equipo = 1
@@ -299,6 +305,7 @@ shape = SubResource( 11 )
 [node name="Equipo A" type="Node2D" parent="." groups=[
 "equipo",
 ]]
+editor/display_folded = true
 
 [node name="Spawn_J1" type="Position2D" parent="Equipo A"]
 position = Vector2( -13.3333, 13.3333 )
@@ -405,6 +412,26 @@ autostart = true
 script = ExtResource( 15 )
 
 [node name="Sprite" type="Sprite" parent="."]
+
+[node name="bgm" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 16 )
+autoplay = true
+
+[node name="SFX" type="Node" parent="." groups=[
+"sfx",
+]]
+
+[node name="1" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource( 17 )
+
+[node name="2" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource( 18 )
+
+[node name="3" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource( 19 )
+
+[node name="4" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource( 20 )
 
 [connection signal="body_entered" from="nav/BackGround/Laterales/AreaS" to="nav/BackGround/Laterales" method="_on_Area2D_body_entered"]
 [connection signal="body_entered" from="nav/BackGround/Laterales/AreaA" to="nav/BackGround/Laterales" method="_on_Area2D2_body_entered"]

@@ -29,13 +29,10 @@ func _ready():
 
 func _physics_process(delta):
 
-	if(momento_saque):
-		procesar_movimiento_saque(delta)
-
 	procesar_movimiento(delta)
 
 	if(!momento_saque):
-		if(IA):
+		if(IA && !en_lateral):
 			check_distancia_IA()
 
 		if(path.size() > 0):
@@ -102,9 +99,40 @@ func _physics_process(delta):
 					mov_b = false
 					mov_c = true
 
-		#else: #Se termino de mover
-			#if(!momento_saque):
-			#	momento_saque = true
+		else: #Se termino de mover
+			if(en_lateral && !momento_saque):
+				momento_saque = true
+				
+				if(gamehandler.tipo_lateral == 0): #Lateral arriba
+						$AnimationPlayer.play("lat_arrm")
+						get_tree().get_nodes_in_group("pelota")[0].pos_actual = $pelota_lateral.global_position
+						get_tree().get_nodes_in_group("pelota")[0].global_position = $pelota_lateral.global_position
+				elif(gamehandler.tipo_lateral == 1): #Lateral abajo
+					$AnimationPlayer.play("lat_abm")
+					get_tree().get_nodes_in_group("pelota")[0].pos_actual = $pelota_lateral.global_position
+					get_tree().get_nodes_in_group("pelota")[0].global_position = $pelota_lateral.global_position
+				elif(gamehandler.tipo_lateral == 2): #Lateral izquierda
+					$AnimationPlayer.play("der")
+					$Sprite.flip_h = false
+					if(get_tree().get_nodes_in_group("pelota")[0].global_position.y > 0):
+						get_tree().get_nodes_in_group("pelota")[0].pos_actual = get_tree().get_nodes_in_group("corner")[0].get_node("2").get_node("2").global_position
+						get_tree().get_nodes_in_group("pelota")[0].global_position = get_tree().get_nodes_in_group("corner")[0].get_node("2").get_node("2").global_position
+					else:
+						get_tree().get_nodes_in_group("pelota")[0].pos_actual = get_tree().get_nodes_in_group("corner")[0].get_node("1").get_node("1").global_position
+						get_tree().get_nodes_in_group("pelota")[0].global_position = get_tree().get_nodes_in_group("corner")[0].get_node("1").get_node("1").global_position
+				elif(gamehandler.tipo_lateral == 3): #Lateral derecha
+					$AnimationPlayer.play("der")
+					$Sprite.flip_h = true
+					if(get_tree().get_nodes_in_group("pelota")[0].global_position.y > 0):
+						get_tree().get_nodes_in_group("pelota")[0].pos_actual = get_tree().get_nodes_in_group("corner")[0].get_node("4").get_node("4").global_position
+						get_tree().get_nodes_in_group("pelota")[0].global_position = get_tree().get_nodes_in_group("corner")[0].get_node("4").get_node("4").global_position
+					else:
+						get_tree().get_nodes_in_group("pelota")[0].pos_actual = get_tree().get_nodes_in_group("corner")[0].get_node("3").get_node("3").global_position
+						get_tree().get_nodes_in_group("pelota")[0].global_position = get_tree().get_nodes_in_group("corner")[0].get_node("3").get_node("3").global_position
+			
+			$tmr.start()
+			
+			
 			#else: #Si es IA y no esta en momento saque
 
 				
@@ -193,30 +221,39 @@ func arco_IA_contrario():
 		target = get_tree().get_nodes_in_group("ar_e1")[0]
 	path = []
 
-func procesar_movimiento_saque(delta):
-	if(0): #Si patea o pasa
-		var vel_patear = gamehandler.pelota.vel_saq
-		if(direccion == direcciones.derecha):
-			if(gamehandler.tipo_lateral == 0): #Lateral Arriba
-				$AnimationPlayer.play("lat_arri2")
-				gamehandler.pelota.Velocidad = Vector2(vel_patear,vel_patear*2)
-			elif(gamehandler.tipo_lateral == 1): #Lateral Abajo
-				$AnimationPlayer.play("lat_abi2")
-				gamehandler.pelota.Velocidad = Vector2(vel_patear,-vel_patear)
-		elif(direccion == direcciones.izquierda):
-			if(gamehandler.tipo_lateral == 0): #Lateral Arriba
-				$AnimationPlayer.play("lat_arri2")
-				gamehandler.pelota.Velocidad = Vector2(-vel_patear,vel_patear*2)
-			elif(gamehandler.tipo_lateral == 1): #Lateral Abajo
-				$AnimationPlayer.play("lat_abi2")
-				gamehandler.pelota.Velocidad = Vector2(-vel_patear,-vel_patear)
-		elif(direccion == direcciones.arriba):
-			$AnimationPlayer.play("lat_arrm2")
-			gamehandler.pelota.Velocidad = Vector2(0,vel_patear*2)
-		elif(direccion == direcciones.abajo):
-			$AnimationPlayer.play("lat_abm2")
-			gamehandler.pelota.Velocidad = Vector2(0,-vel_patear)
-
+func procesar_movimiento_saque():
+	var delta = get_process_delta_time()
+	var vel_patear = gamehandler.pelota.vel_saq
+	direccion = direcciones.derecha
+	#DIRECCION AL AZAR
+	#var dir = randi()%10
+	#if(dir < 3):
+	#	direccion = direcciones.derecha
+	#elif(dir < 6):
+	#	direccion = direcciones.izquierda
+	#elif(dir < 10):
+	#	direccion = direcciones.arriba
+		
+	if(direccion == direcciones.derecha):
+		if(gamehandler.tipo_lateral == 0): #Lateral Arriba
+			$AnimationPlayer.play("lat_arri2")
+			gamehandler.pelota.Velocidad = Vector2(vel_patear,vel_patear*2)
+		elif(gamehandler.tipo_lateral == 1): #Lateral Abajo
+			$AnimationPlayer.play("lat_abi2")
+			gamehandler.pelota.Velocidad = Vector2(vel_patear,-vel_patear)
+	elif(direccion == direcciones.izquierda):
+		if(gamehandler.tipo_lateral == 0): #Lateral Arriba
+			$AnimationPlayer.play("lat_arri2")
+			gamehandler.pelota.Velocidad = Vector2(-vel_patear,vel_patear*2)
+		elif(gamehandler.tipo_lateral == 1): #Lateral Abajo
+			$AnimationPlayer.play("lat_abi2")
+			gamehandler.pelota.Velocidad = Vector2(-vel_patear,-vel_patear)
+	elif(direccion == direcciones.arriba):
+		$AnimationPlayer.play("lat_arrm2")
+		gamehandler.pelota.Velocidad = Vector2(0,vel_patear*2)
+	elif(direccion == direcciones.abajo):
+		$AnimationPlayer.play("lat_abm2")
+		gamehandler.pelota.Velocidad = Vector2(0,-vel_patear)
 		if(gamehandler.tipo_lateral == 2): #Izq
 			if(gamehandler.pelota.global_position.y > 0):
 				gamehandler.pelota.Velocidad = Vector2(gamehandler.pelota.vel_corner/2,-gamehandler.pelota.vel_corner*2)
@@ -228,40 +265,16 @@ func procesar_movimiento_saque(delta):
 			else:
 				gamehandler.pelota.Velocidad = Vector2(-gamehandler.pelota.vel_corner/2,gamehandler.pelota.vel_corner*2)
 
-		gamehandler.pelota.pase = true
-		gamehandler.pelota.target = null
-		gamehandler.pelota.get_node("AnimationPlayer").stop()
-		gamehandler.pelota.mover(Velocidad*get_node("AnimationPlayer").get_animation("Aba").length)
-		en_lateral = false
-		get_tree().get_nodes_in_group("laterales")[0].activar_jugadores()
+	gamehandler.pelota.pase = true
+	gamehandler.pelota.target = null
+	gamehandler.pelota.get_node("AnimationPlayer").stop()
+	gamehandler.pelota.mover(Velocidad*get_node("AnimationPlayer").get_animation("Aba").length)
+	en_lateral = false
+	get_tree().get_nodes_in_group("laterales")[0].activar_jugadores()
 
-		yield(get_tree().create_timer(0.3),"timeout")
-		momento_saque = false
-		gamehandler.instancia_lateral = false
-	elif(gamehandler.tipo_lateral == 0 || gamehandler.tipo_lateral == 1): #Si se mueve mientras esta en saque
-		if(1 && !moviendo && gamehandler): #Si va hacia la derecha
-			direccion = direcciones.derecha
-			if(gamehandler.tipo_lateral == 0):
-				$AnimationPlayer.play("lat_arri")
-				$Sprite.flip_h = true
-			else:
-				$AnimationPlayer.play("lat_abi")
-				$Sprite.flip_h = true
-		elif(2 && !moviendo): #Si izquierda
-			direccion = direcciones.izquierda
-			if(gamehandler.tipo_lateral == 0):
-				$AnimationPlayer.play("lat_arri")
-				$Sprite.flip_h = false
-			else:
-				$AnimationPlayer.play("lat_abi")
-				$Sprite.flip_h = false
-		elif(3 || 4): #Arriba o Abajo
-			if(gamehandler.tipo_lateral == 0):
-				$AnimationPlayer.play("lat_arrm")
-				direccion = direcciones.arriba
-			elif(gamehandler.tipo_lateral == 1):
-				$AnimationPlayer.play("lat_abm")
-				direccion = direcciones.abajo
+	yield(get_tree().create_timer(0.3),"timeout")
+	momento_saque = false
+	gamehandler.instancia_lateral = false
 
 func procesar_movimiento(var delta_t):
 
@@ -270,6 +283,7 @@ func procesar_movimiento(var delta_t):
 		if(gamehandler.pelota.target == self && !gamehandler.pelota.get_node("AnimationPlayer").is_playing() && !gamehandler.pelota.pase): #Tengo pelota en pie
 			if(abs($CollisionShape2D.position.distance_to(gamehandler.pelota.get_node("CollisionShape2D").position)) < 4): #Si estan proximos la pelota y el jugador
 				if($AnimationPlayer.current_animation_position <= 0.1): #check_direction_player(gamehandler.pelota.get_node("Area2D/CollisionShape2D").global_position (esta bien sacarlo?)
+					gamehandler.reproducir_sfx(2)
 					gamehandler.pelota.mover(Velocidad*get_node("AnimationPlayer").get_animation("Aba").length)
 					gamehandler.pelota.ult_toque = team
 					gamehandler.pelota.target = null #Suelto la pelota
@@ -283,8 +297,11 @@ func procesar_movimiento(var delta_t):
 
 		if(obj_colisionado != null && obj_colisionado.collider.is_in_group("pelota") && gamehandler.pelota.target == null):
 			if(!obj_colisionado.collider.get_node("AnimationPlayer").is_playing()):
-				gamehandler.pelota.target = self #Asigno pelota como target
-				gamehandler.pelota.ult_toque = team
+				if(gamehandler.pelota.target != null && gamehandler.pelota.target.is_in_group("arquero")):
+					pass
+				else:	
+					gamehandler.pelota.target = self #Asigno pelota como target
+					gamehandler.pelota.ult_toque = team
 
 func _on_AnimationPlayer_animation_finished(anim_name):
 	moviendo = false
@@ -346,7 +363,7 @@ func patear(numero): #Numero 0 es pase, numero 1 es patear
 
 	
 	gamehandler.pelota.target = null
-		
+	gamehandler.reproducir_sfx(1)
 	yield(get_tree().create_timer(0.5), "timeout")
 
 	match direccion:
@@ -434,3 +451,6 @@ func exception_eq(estado):
 
 func _on_tmr_timeout():
 	mov_a = false
+	if(momento_saque):
+		momento_saque = false
+		procesar_movimiento_saque() #Saca

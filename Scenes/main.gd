@@ -33,7 +33,7 @@ func spawn_teams():
 				var vel_desp_b = newJugador.vel_desp_b
 				var vel_desp = newJugador.vel_desp
 				if(gamehandler.players == 1):
-					#newJugador.set_script(script_IA) MOMENTANEO
+					newJugador.set_script(script_IA)
 					newJugador.IA = true
 					newJugador.vel_desp_b = vel_desp_b
 					newJugador.vel_desp = vel_desp

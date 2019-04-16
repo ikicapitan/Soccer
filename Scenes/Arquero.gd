@@ -153,6 +153,7 @@ func procesar_teclas():
 func procesar_movimiento_saque(delta):
 	if(gamehandler.pelota.target == self):
 		if((teclas[4] || teclas[5])): #Si patea o pasa
+			gamehandler.reproducir_sfx(1)
 			var vel_patear = gamehandler.pelota.vel_arq
 			if(direccion == direcciones.derecha):
 				$AnimationPlayer.play("pateard")

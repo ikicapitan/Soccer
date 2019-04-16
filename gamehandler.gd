@@ -43,10 +43,12 @@ func time_up():
 		estados.fase_1:
 			e_actual = estados.fase_2
 			tiempo = duracion_t1
+			reproducir_sfx(3)
 			second_half()
 		estados.fase_2:
 			e_actual = estados.fase_3
 			tiempo = duracion_t1
+			reproducir_sfx(4)
 			reset_match()
 		estados.fase_3:
 			e_actual = estados.fase_1
@@ -200,3 +202,7 @@ func fin_saque_arco():
 	var jugadores = get_tree().get_nodes_in_group("player")
 	for j in jugadores:
 		j.exception_eq(false)
+		
+func reproducir_sfx(num):
+	var sfx = get_tree().get_nodes_in_group("sfx")[0]
+	sfx.get_node(String(num)).play()

@@ -43,7 +43,7 @@ func _physics_process(delta):
 
 		if(path.size() > 0):
 			var d = $CollisionShape2D.global_position.distance_to(path[0]) #Medimos la distancia a recorrer
-			if(d > 5): #Si la distancia es mayor a n, avanzamos
+			if(d > 3): #Si la distancia es mayor a n, avanzamos
 				if(!get_node("AnimationPlayer").is_playing()):
 					if(abs($CollisionShape2D.global_position.x - path[0].x) >1): #Me fijo si eje X esta lejos
 						if($CollisionShape2D.global_position.x > path[0].x):
@@ -237,23 +237,24 @@ func procesar_movimiento_saque(delta):
 
 func procesar_movimiento(var delta_t):
 
-	if(moviendo):
-		var obj_colisionado = move_and_collide(Velocidad * delta_t)
-		if(gamehandler.pelota.target == self && !gamehandler.pelota.get_node("AnimationPlayer").is_playing() && !gamehandler.pelota.pase): #Tengo pelota en pie
-			if(abs($CollisionShape2D.position.distance_to(gamehandler.pelota.get_node("CollisionShape2D").position)) < 4): #Si estan proximos la pelota y el jugador
-					#Atajar
-					
-					gamehandler.pelota.target = self
-					gamehandler.saque_arco()
-					$AnimationPlayer.play("at_der")
-					if(gamehandler.pelota.global_position.x < 0):
-						direccion = direcciones.derecha
-					else:
-						direccion = direcciones.izquierda
-					gamehandler.pelota.target = null
-					mov_a = true
-					if($tmr.time_left > 0.0):
-						$tmr.start() #Empiezo
+	var obj_colisionado = move_and_collide(Velocidad * delta_t)
+	if(gamehandler.pelota.target == self && !gamehandler.pelota.get_node("AnimationPlayer").is_playing() && !gamehandler.pelota.pase): #Tengo pelota en pie
+		if(abs($CollisionShape2D.position.distance_to(gamehandler.pelota.get_node("CollisionShape2D").position)) < 4): #Si estan proximos la pelota y el jugador
+				#Atajar
+				print(name)
+				gamehandler.pelota.target = self
+				gamehandler.saque_arco()
+				$AnimationPlayer.play("at_der")
+				if(gamehandler.pelota.global_position.x < 0):
+					direccion = direcciones.derecha
+					$Sprite.flip_h = false
+				else:
+					direccion = direcciones.izquierda
+					$Sprite.flip_h = true
+				gamehandler.pelota.target = null
+				mov_a = true
+					#if($tmr.time_left > 0.0):
+				$tmr.start() #Empiezo
 					#var jugadores = get_tree().get_nodes_in_group("player")
 					#for j in jugadores:
 					#	if(j.team == team && j != self):
@@ -263,12 +264,13 @@ func procesar_movimiento(var delta_t):
 					#		j.enfriamiento_regreso = true
 					#		yield(get_tree().create_timer(2.0),"timeout")
 					#		j.enfriamiento_regreso = false
-					yield(get_tree().create_timer(1.5), "timeout") #Espero 1 segundo
-			else:
-				gamehandler.pelota.target = null
-				
-			
-		if(obj_colisionado != null && obj_colisionado.collider.is_in_group("pelota")):
+				yield(get_tree().create_timer(1.5), "timeout") #Espero 1 segundo
+		else:
+			gamehandler.pelota.target = null
+		
+		
+	if(obj_colisionado != null && obj_colisionado.collider.is_in_group("pelota")):
+		if(gamehandler.pelota.target != null && gamehandler.pelota.target != self):
 			gamehandler.pelota.target = self #Asigno pelota como target
 			gamehandler.pelota.ult_toque = team
 
@@ -278,14 +280,16 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 
 func patear(numero): #Numero 0 es pase, numero 1 es patear
 	var velocidad_patear
-
-	if(gamehandler.pelota.target == self): #Si no esta pateando el aire
-		gamehandler.pelota.ult_toque = team
-		match(numero):
-			0: #Pase
-				velocidad_patear = gamehandler.pelota.vel_pas
-			1: #Patear
-				velocidad_patear = gamehandler.pelota.vel_shoot
+	gamehandler.reproducir_sfx(1)
+	#if(gamehandler.pelota.target == self): #Si no esta pateando el aire
+	gamehandler.pelota.target = self
+	gamehandler.pelota.ult_toque = team
+	match(numero):
+		0: #Pase
+			print("paso")
+			velocidad_patear = gamehandler.pelota.vel_pas
+		1: #Patear
+			velocidad_patear = gamehandler.pelota.vel_shoot
 
 	match direccion:
 		direcciones.derecha:
@@ -295,7 +299,7 @@ func patear(numero): #Numero 0 es pase, numero 1 es patear
 		direcciones.izquierda:
 			get_node("AnimationPlayer").call_deferred("play","pateard")
 			if(gamehandler.pelota.target == self && !gamehandler.pelota.pase && !gamehandler.pelota.shoot):
-				gamehandler.pelota.Velocidad = Vector2(-velocidad_patear, 0)
+				gamehandler.pelota.Velocidad = Vector2(-velocidad_patear*3, 0)
 		direcciones.arriba:
 			get_node("AnimationPlayer").call_deferred("play","pateararr")
 			if(gamehandler.pelota.target == self && !gamehandler.pelota.pase && !gamehandler.pelota.shoot):
@@ -315,11 +319,11 @@ func patear(numero): #Numero 0 es pase, numero 1 es patear
 		direcciones.diababi:
 			get_node("AnimationPlayer").call_deferred("play","pateardaba")
 			if(gamehandler.pelota.target == self && !gamehandler.pelota.pase && !gamehandler.pelota.shoot):
-				gamehandler.pelota.Velocidad = Vector2(-velocidad_patear, velocidad_patear)
+				gamehandler.pelota.Velocidad = Vector2(-velocidad_patear*3, velocidad_patear/3)
 		direcciones.diabarri:
 			get_node("AnimationPlayer").call_deferred("play","pateardarr")
 			if(gamehandler.pelota.target == self && !gamehandler.pelota.pase && !gamehandler.pelota.shoot):
-				gamehandler.pelota.Velocidad = Vector2(-velocidad_patear, -velocidad_patear)
+				gamehandler.pelota.Velocidad = Vector2(-velocidad_patear*3, -velocidad_patear/3)
 
 	if(gamehandler.pelota.target == self): #Si esta en posesion del balon en ese momento
 		match(numero):
@@ -330,7 +334,7 @@ func patear(numero): #Numero 0 es pase, numero 1 es patear
 		gamehandler.pelota.get_node("AnimationPlayer").stop()
 		gamehandler.pelota.mover(Velocidad*get_node("AnimationPlayer").get_animation("Aba").length)
 
-
+	
 	gamehandler.pelota.target = null
 
 	yield(get_tree().create_timer(0.5), "timeout")
@@ -352,6 +356,7 @@ func patear(numero): #Numero 0 es pase, numero 1 es patear
 			get_node("AnimationPlayer").play("diaba")
 		direcciones.diabarri:
 			get_node("AnimationPlayer").play("diarr")
+			
 
 func create_path_tp(): #Crea el camino a punto previo a la bola
 	var nav = get_tree().get_nodes_in_group("nav")[0] #Obtengo el nodo navigation2D
@@ -419,13 +424,29 @@ func exception_eq(estado):
 
 
 func _on_tmr_timeout():
-	print("PATEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
 	mov_a = false
+	gamehandler.fin_saque_arco()
 	var resultado = randi()%10
 	if(resultado < 3):
-		direccion = direcciones.diagabd
+		direccion = direcciones.diababi
 	elif(resultado < 6):
-		direccion = direcciones.diagarrd
+		direccion = direcciones.diabarri
 	else:
 		direccion = direcciones.izquierda
+	gamehandler.pelota.global_position = $pie.global_position
+	gamehandler.pelota.pos_actual = $pie.global_position
 	patear(0)
+	add_collision_exception_with(gamehandler.pelota)
+	yield(get_tree().create_timer(2.0),"timeout")
+	remove_collision_exception_with(gamehandler.pelota)
+	#print(direccion)
+	#enfriamiento_regreso = true
+	
+	#enfriamiento_regreso = false
+	
+func _on_Area2D_body_entered(body):	
+	if body != self:
+		pass
+
+func _on_Area2D_body_exited(body):
+	pass

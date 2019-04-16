@@ -23,7 +23,6 @@ func _on_Area2D4_body_entered(body): #Der
 		lateral_inicio(body, 3)
 
 func lateral_inicio(body, tipo):
-	
 	if(!gamehandler.instancia_lateral):
 		gamehandler.instancia_lateral = true
 		#body.excepciones(true)

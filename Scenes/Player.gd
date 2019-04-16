@@ -255,7 +255,7 @@ func procesar_movimiento(var delta_t):
 		if(gamehandler.pelota.target == self && !gamehandler.pelota.get_node("AnimationPlayer").is_playing() && !gamehandler.pelota.pase): #Tengo pelota en pie
 			if(abs($CollisionShape2D.position.distance_to(gamehandler.pelota.get_node("CollisionShape2D").position)) < 4): #Si estan proximos la pelota y el jugador
 				if(check_direction_player(gamehandler.pelota.get_node("Area2D/CollisionShape2D").global_position) && $AnimationPlayer.current_animation_position <= 0.1):
-					
+					gamehandler.reproducir_sfx(2)
 					gamehandler.pelota.mover(Velocidad*get_node("AnimationPlayer").get_animation("Aba").length)
 					gamehandler.pelota.ult_toque = team
 					gamehandler.pelota.target = null #Suelto la pelota
@@ -317,6 +317,7 @@ func patear(numero): #Numero 0 es pase, numero 1 es patear
 	
 	if(gamehandler.pelota.target == self): #Si no esta pateando el aire
 		gamehandler.pelota.ult_toque = team
+		gamehandler.reproducir_sfx(1)
 		match(numero):
 			0: #Pase
 				velocidad_patear = gamehandler.pelota.vel_pas
@@ -365,7 +366,8 @@ func patear(numero): #Numero 0 es pase, numero 1 es patear
 				gamehandler.pelota.shoot = true
 		gamehandler.pelota.get_node("AnimationPlayer").stop()
 		gamehandler.pelota.mover(Velocidad*get_node("AnimationPlayer").get_animation("Aba").length)
-
+		
+		gamehandler.pelota.target = null
 			
 	yield(get_tree().create_timer(0.5), "timeout")
 	
